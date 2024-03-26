@@ -36,79 +36,84 @@ import com.example.financemanager.presentation.viewModel.SignUpViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun SingUpScreen(viewModel: SignUpViewModel = viewModel(), navToSignIn: ()-> Unit){
+fun SingUpScreen(viewModel: SignUpViewModel = viewModel(), navToSignIn: () -> Unit) {
 
     val focus = LocalFocusManager.current
     val keyboard = LocalSoftwareKeyboardController.current
 
     val uiState = viewModel.state.collectAsState()
-  Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = Modifier.fillMaxSize()) {
 
 
-      Column(
-          modifier = Modifier
-              .fillMaxHeight()
-              .fillMaxWidth(0.8f)
-              .align(Alignment.Center)
-      ) {
-          Spacer(modifier = Modifier.weight(2f))
-          Text(text = "Sign Up", fontSize = 32.sp, fontWeight = FontWeight.Bold)
-          Spacer(modifier = Modifier.weight(0.3f))
-          TextField(value = uiState.value.email, onValueChange = {viewModel.updateEmail(it)},
-              label = { Text("Email") }, modifier = Modifier.fillMaxWidth(),
-              colors = TextFieldDefaults.colors(
-                  unfocusedIndicatorColor = Color.Gray,
-                  focusedIndicatorColor = Color(144, 202, 249, 255),
-                  unfocusedContainerColor = Color.Transparent,
-              ),
-              keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
-          )
-          Spacer(modifier = Modifier.weight(0.1f))
-          TextField(value = uiState.value.name, onValueChange = {viewModel.updateName(it)},
-              label = { Text("User name") }, modifier = Modifier.fillMaxWidth(),
-              colors = TextFieldDefaults.colors(
-                  unfocusedIndicatorColor = Color.Gray,
-                  focusedIndicatorColor = Color(144, 202, 249, 255),
-                  unfocusedContainerColor = Color.Transparent,
-              ),
-              keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
-          Spacer(modifier = Modifier.weight(0.1f))
-          TextField(value = uiState.value.password, onValueChange = {viewModel.updatePassword(it)},
-              visualTransformation = PasswordVisualTransformation(),
-              label = { Text("Password") }, modifier = Modifier.fillMaxWidth(),
-              colors = TextFieldDefaults.colors(
-                  unfocusedIndicatorColor = Color.Gray,
-                  focusedIndicatorColor = Color(144, 202, 249, 255),
-                  unfocusedContainerColor = Color.Transparent,
-              ),
-              keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-              keyboardActions = KeyboardActions(onDone = {
-                  focus.clearFocus()
-                  keyboard?.hide()
-              })
-          )
-          Spacer(modifier = Modifier.weight(0.3f))
-          Button(onClick = { navToSignIn()}, modifier = Modifier
-              .fillMaxWidth()
-              .height(75.dp),
-              shape = RoundedCornerShape(60f),
-              colors = ButtonDefaults.buttonColors(
-                  containerColor = Color(33, 150, 243, 255),
-                  contentColor = Color.White
-              )
-          ) {
-              Text(text = "Sing Up", fontSize = 24.sp)
-          }
-          Spacer(modifier = Modifier.weight(0.7f))
-      }
+        Column(
+            modifier = Modifier
+                .fillMaxHeight()
+                .fillMaxWidth(0.8f)
+                .align(Alignment.Center)
+        ) {
+            Spacer(modifier = Modifier.weight(2f))
+            Text(text = "Sign Up", fontSize = 32.sp, fontWeight = FontWeight.Bold)
+            Spacer(modifier = Modifier.weight(0.3f))
+            TextField(
+                value = uiState.value.email, onValueChange = { viewModel.updateEmail(it) },
+                label = { Text("Email") }, modifier = Modifier.fillMaxWidth(),
+                colors = TextFieldDefaults.colors(
+                    unfocusedIndicatorColor = Color.Gray,
+                    focusedIndicatorColor = Color(144, 202, 249, 255),
+                    unfocusedContainerColor = Color.Transparent,
+                ),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
+            )
+            Spacer(modifier = Modifier.weight(0.1f))
+            TextField(
+                value = uiState.value.name, onValueChange = { viewModel.updateName(it) },
+                label = { Text("User name") }, modifier = Modifier.fillMaxWidth(),
+                colors = TextFieldDefaults.colors(
+                    unfocusedIndicatorColor = Color.Gray,
+                    focusedIndicatorColor = Color(144, 202, 249, 255),
+                    unfocusedContainerColor = Color.Transparent,
+                ),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
+            )
+            Spacer(modifier = Modifier.weight(0.1f))
+            TextField(
+                value = uiState.value.password, onValueChange = { viewModel.updatePassword(it) },
+                visualTransformation = PasswordVisualTransformation(),
+                label = { Text("Password") }, modifier = Modifier.fillMaxWidth(),
+                colors = TextFieldDefaults.colors(
+                    unfocusedIndicatorColor = Color.Gray,
+                    focusedIndicatorColor = Color(144, 202, 249, 255),
+                    unfocusedContainerColor = Color.Transparent,
+                ),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(onDone = {
+                    focus.clearFocus()
+                    keyboard?.hide()
+                })
+            )
+            Spacer(modifier = Modifier.weight(0.3f))
+            Button(
+                onClick = { navToSignIn() }, modifier = Modifier
+                    .fillMaxWidth()
+                    .height(75.dp),
+                shape = RoundedCornerShape(60f),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(33, 150, 243, 255),
+                    contentColor = Color.White
+                )
+            ) {
+                Text(text = "Sing Up", fontSize = 24.sp)
+            }
+            Spacer(modifier = Modifier.weight(0.7f))
+        }
 
-  }
+    }
 
 }
 
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewSignInScreen(){
-    SingUpScreen( navToSignIn = {})
+fun PreviewSignInScreen() {
+    SingUpScreen(navToSignIn = {})
 }

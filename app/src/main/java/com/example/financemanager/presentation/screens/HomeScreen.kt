@@ -9,9 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -28,57 +26,65 @@ import dev.chrisbanes.haze.haze
 import dev.chrisbanes.haze.hazeChild
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier){
+fun HomeScreen(modifier: Modifier = Modifier) {
 
     val hazeState = remember {
         HazeState()
     }
-   Box(modifier = modifier) {
-        Image(painter = painterResource(id = R.drawable.upperbackground), contentDescription ="",
+    Box(modifier = modifier) {
+        Image(
+            painter = painterResource(id = R.drawable.upperbackground), contentDescription = "",
             modifier = Modifier
                 .fillMaxWidth()
                 .height(300.dp)
                 .haze(hazeState),
-            contentScale = ContentScale.FillBounds)
+            contentScale = ContentScale.FillBounds
+        )
 
 
 
 
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Spacer(modifier = modifier.height(200.dp))
-            Card(modifier = Modifier
-                .fillMaxWidth(0.8f)
-                .height(200.dp)
-                .hazeChild(hazeState,
-                    shape = RoundedCornerShape(30.dp),
-                    style = HazeStyle(tint = Color(168, 168, 168, 57),
-                        blurRadius = 16.dp,
-                        noiseFactor = 0.15f
-                        )),
-                colors = CardDefaults.cardColors(containerColor = Color.Transparent)) {
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth(0.8f)
+                    .height(200.dp)
+                    .hazeChild(
+                        hazeState,
+                        shape = RoundedCornerShape(30.dp),
+                        style = HazeStyle(
+                            tint = Color(168, 168, 168, 57),
+                            blurRadius = 16.dp,
+                            noiseFactor = 0.15f
+                        )
+                    ),
+                colors = CardDefaults.cardColors(containerColor = Color.Transparent)
+            ) {
 
             }
-            Box(modifier = Modifier
-                .fillMaxWidth()
-                .height(400.dp)
-                .background(color = Color.Red))
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(400.dp)
+                    .background(color = Color.Red)
+            )
             Spacer(modifier = modifier.height(300.dp))
-            Box(modifier = Modifier
-                .fillMaxWidth()
-                .height(400.dp)
-                .background(color = Color.Red))
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(400.dp)
+                    .background(color = Color.Red)
+            )
         }
-   }
+    }
 
 
 }
 
 
-
-
-
 @Preview(showBackground = true)
 @Composable
-fun PreviewHomeScreen(){
+fun PreviewHomeScreen() {
     HomeScreen()
 }
