@@ -126,8 +126,6 @@ private fun SampleNavigationBar(
                     )
                 },
                 colors = colors(
-                    unselectedIconColor = Color(178, 235, 242, 255),
-                    selectedIconColor = Color.Blue,
                     indicatorColor = MaterialTheme.colorScheme.surfaceColorAtElevation(
                         LocalAbsoluteTonalElevation.current
                     )

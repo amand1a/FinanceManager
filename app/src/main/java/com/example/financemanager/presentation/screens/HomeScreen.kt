@@ -59,7 +59,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                             noiseFactor = 0.15f
                         )
                     ),
-                colors = CardDefaults.cardColors(containerColor = Color.Transparent)
+                colors = CardDefaults.cardColors()
             ) {
 
             }
