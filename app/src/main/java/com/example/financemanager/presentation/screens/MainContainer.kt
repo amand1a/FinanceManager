@@ -29,6 +29,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemColors
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.NavigationBarItemDefaults.colors
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -51,6 +52,8 @@ import androidx.hilt.navigation.HiltViewModelFactory
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
 import androidx.navigation.Navigator
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -70,41 +73,9 @@ import dev.chrisbanes.haze.hazeChild
 @Composable
 fun mainContainer(modifier: Modifier = Modifier){
     val navController = rememberNavController()
-    val backStackEntry = navController.currentBackStackEntryAsState()
     val hazeState = remember {
         HazeState()
     }
-
-    var isLoggedIn = remember { mutableStateOf(false)}
-
-    if (!isLoggedIn.value) {
-        // Экран авторизации
-        Box(modifier = Modifier.fillMaxSize()) {
-            Image(painter = painterResource(id = R.drawable.sign), contentDescription = "" , modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(0.4f),
-                contentScale = ContentScale.Crop)
-            NavHost(
-                navController = navController,
-                startDestination = LoginNavigation.Start.title,
-                modifier = Modifier.fillMaxSize()
-            ) {
-                composable(LoginNavigation.Start.title) {
-                    StartScreen({ navController.navigate(LoginNavigation.SingIn.title) },
-                        { navController.navigate(LoginNavigation.SignUp.title) })
-                }
-                composable(LoginNavigation.SingIn.title) {
-                    val viewModel = hiltViewModel<SignInViewModel>()
-                    SignInScreen({ isLoggedIn.value = true }, viewModel)
-                }
-                composable(LoginNavigation.SignUp.title) {
-                    val viewModel = hiltViewModel<SignUpViewModel>()
-                    SingUpScreen( viewModel ,{ navController.navigate(LoginNavigation.SingIn.title) })
-                }
-
-            }
-        }
-    } else {
         // Главный экран с Bottom Navigation
         Scaffold(
             topBar = {
@@ -123,7 +94,6 @@ fun mainContainer(modifier: Modifier = Modifier){
             },
             bottomBar = {
                 SampleNavigationBar(
-                    backStackEntry,
                     navController = navController,
                     modifier = Modifier.hazeChild(hazeState)
                 )
@@ -138,30 +108,29 @@ fun mainContainer(modifier: Modifier = Modifier){
                 item {
                     NavHost(
                         navController = navController,
-                        startDestination = MainNavigation.Home.title,
+                        startDestination = MainNavigation.Add.title,
                         modifier = Modifier.fillMaxSize()
                     ) {
                         composable(MainNavigation.Home.title ,) {
-                            HomeScreen(Modifier)
+                            HomeScreen()
                         }
                         composable(MainNavigation.Add.title) {
-
+                            AddExpensesScreen()
                         }
                         composable(MainNavigation.Details.title) {
-                            DetailScreen(Modifier)
+                            DetailScreen()
                         }
                     }
                 }
             }
         }
-    }
+
 }
 
 
 
 @Composable
 private fun SampleNavigationBar(
-    backStackEntry: State<NavBackStackEntry?>,
     modifier: Modifier = Modifier,
     navController: NavController
 ) {
@@ -169,15 +138,19 @@ private fun SampleNavigationBar(
         containerColor = Color.Transparent,
         modifier = modifier,
     ) {
-        var selectedItem by remember { mutableStateOf(0) }
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentRoute = navBackStackEntry?.destination?.route
         bottomNavItems.forEachIndexed {index , item  ->
 
             NavigationBarItem(
-                selected = selectedItem == index,
-                onClick = { selectedItem = index
-                    navController.navigate(item.route){
-                        popUpTo(item.route) { inclusive = true }
-                    } },
+                selected = item.route == currentRoute,
+                onClick = {
+                    navController.navigate(item.route) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true} },
 
                 icon = {
                     Icon(
@@ -185,8 +158,7 @@ private fun SampleNavigationBar(
                         contentDescription = "${item.name} Icon",
                     )
                 },
-                colors = androidx.compose.material3.NavigationBarItemDefaults
-                    .colors(
+                colors = NavigationBarItemDefaults.colors(
                         unselectedIconColor = Color(178, 235, 242, 255),
                         selectedIconColor = Color.Blue,
                         indicatorColor = MaterialTheme.colorScheme.surfaceColorAtElevation(LocalAbsoluteTonalElevation.current) )
@@ -195,19 +167,6 @@ private fun SampleNavigationBar(
     }
 }
 
-@Composable
-fun bottomNavigationBar( navController: NavController ,modifier: Modifier){
-    BottomAppBar(containerColor = Color.Transparent , modifier = modifier) {
-        IconButton(onClick = { navController.navigate(MainNavigation.Home.title)} , modifier = Modifier.padding(start = 16.dp)) {
-            Icon( imageVector = Icons.Filled.Home , contentDescription = "home")
-        }
-        
-        Spacer(modifier = Modifier.weight(1f))
-        IconButton(onClick = {navController.navigate(MainNavigation.Details.title)   } , modifier = Modifier.padding(end = 16.dp)) {
-            Icon(imageVector = Icons.Filled.Build  , contentDescription = "details")
-        }
-    }
-}
 
 
 @Preview(showBackground = true)
@@ -215,3 +174,7 @@ fun bottomNavigationBar( navController: NavController ,modifier: Modifier){
 fun PreviewMainContainer(){
     mainContainer()
 }
+
+
+
+
