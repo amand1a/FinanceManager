@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">FinanceManager</string>
+    <string name="food_drinks"><![CDATA[Food & Drinks]]></string>
+    <string name="shopping">Shopping</string>
+    <string name="transportation">Transportation</string>
+    <string name="vehicle">Vehicle</string>
+    <string name="medicine">Medicine</string>
+    <string name="entertainment">Entertainment</string>
+    <string name="communication_electronics">Communication, Electronics</string>
+    <string name="taxes">Taxes</string>
+    <string name="house">House</string>
+    <string name="other">Other</string>
 </resources>
