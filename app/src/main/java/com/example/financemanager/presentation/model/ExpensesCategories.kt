@@ -2,11 +2,13 @@ package com.example.financemanager.presentation.model
 
 import androidx.compose.ui.graphics.Color
 import com.example.financemanager.R
+
 data class ExpensesCategories(
     val title: Int,
     val icon: Int,
     val containerColor: Color,
 )
+
 val ArrayOfExpenses = listOf(
     ExpensesCategories(
         title = R.string.food_drinks,
