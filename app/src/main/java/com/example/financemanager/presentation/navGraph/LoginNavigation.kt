@@ -1,6 +1,9 @@
 package com.example.financemanager.presentation.navGraph
-sealed class LoginNavigation(val title: String){
-    data object Start:LoginNavigation("start")
-    data object SingIn:LoginNavigation("signIn")
-    data object SignUp: LoginNavigation("SignUp")
+
+import com.example.financemanager.R
+
+sealed class LoginNavigation(val title: Int) {
+    data object Start : LoginNavigation(R.string.start)
+    data object SingIn : LoginNavigation(R.string.signin)
+    data object SignUp : LoginNavigation(R.string.signup)
 }

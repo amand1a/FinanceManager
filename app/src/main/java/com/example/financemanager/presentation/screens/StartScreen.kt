@@ -23,12 +23,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.financemanager.R
+
 @Composable
 fun StartScreen(navToSignIn: () -> Unit, navToSignUp: () -> Unit, modifier: Modifier = Modifier) {
     Box(modifier = modifier) {
         Image(
             painter = painterResource(id = R.drawable.welcome),
-            contentDescription = "welcome",
+            contentDescription = stringResource(R.string.welcome),
             contentScale = ContentScale.FillBounds
         )
         Column(
@@ -36,9 +37,10 @@ fun StartScreen(navToSignIn: () -> Unit, navToSignUp: () -> Unit, modifier: Modi
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.weight(3f))
-            Button(onClick = { navToSignIn() }, modifier = Modifier
-                .fillMaxWidth(0.65f)
-                .height(75.dp),
+            Button(
+                onClick = { navToSignIn() }, modifier = Modifier
+                    .fillMaxWidth(0.65f)
+                    .height(75.dp),
                 shape = RoundedCornerShape(60f),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(33, 150, 243, 255),
@@ -59,13 +61,14 @@ fun StartScreen(navToSignIn: () -> Unit, navToSignUp: () -> Unit, modifier: Modi
                     contentColor = Color(33, 150, 243, 255)
                 )
             ) {
-                Text(text = "Sing Up", fontSize = 24.sp)
+                Text(text = stringResource(id = R.string.sign_up), fontSize = 24.sp)
             }
             Spacer(modifier = Modifier.weight(1f))
         }
     }
 
 }
+
 @Preview(showBackground = true)
 @Composable
 fun PreviewStartScreen() {

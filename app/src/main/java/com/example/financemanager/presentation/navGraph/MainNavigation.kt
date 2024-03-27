@@ -7,12 +7,14 @@ import androidx.compose.material.icons.rounded.AddCircle
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.financemanager.R
-sealed class MainNavigation (val title: Int){
-    data object Home: MainNavigation(R.string.homeTitle)
-    data object Details: MainNavigation(R.string.settingsTitle)
+
+sealed class MainNavigation(val title: Int) {
+    data object Home : MainNavigation(R.string.homeTitle)
+    data object Details : MainNavigation(R.string.settingsTitle)
     data object Add : MainNavigation(R.string.createTitle)
 }
-fun getBottomNavItems(context: Context): List<BottomNavItem>{
+
+fun getBottomNavItems(context: Context): List<BottomNavItem> {
     return listOf(
         BottomNavItem(
             name = context.getString(R.string.homeTitle),
@@ -31,6 +33,7 @@ fun getBottomNavItems(context: Context): List<BottomNavItem>{
         ),
     )
 }
+
 data class BottomNavItem(
     val name: String,
     val route: String,

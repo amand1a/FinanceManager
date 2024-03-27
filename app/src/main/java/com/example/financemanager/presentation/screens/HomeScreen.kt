@@ -24,6 +24,7 @@ import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.HazeStyle
 import dev.chrisbanes.haze.haze
 import dev.chrisbanes.haze.hazeChild
+
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier) {
     val hazeState = remember {
@@ -72,6 +73,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         }
     }
 }
+
 @Preview(showBackground = true)
 @Composable
 fun PreviewHomeScreen() {

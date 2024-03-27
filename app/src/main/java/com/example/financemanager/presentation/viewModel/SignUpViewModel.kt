@@ -9,34 +9,39 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 @HiltViewModel
-class SignUpViewModel @Inject constructor(): ViewModel(){
-    private  val  _uiState = MutableStateFlow(SignUpState("" ,"" , "", FetchData.Typing))
+class SignUpViewModel @Inject constructor() : ViewModel() {
+    private val _uiState = MutableStateFlow(SignUpState("", "", "", FetchData.Typing))
     val state = _uiState.asStateFlow()
-    fun signUp(){
+    fun signUp() {
         viewModelScope.launch {
             delay(1000)
             _uiState.update {
-                it.copy(fetchData =  FetchData.Success)
+                it.copy(fetchData = FetchData.Success)
             }
         }
     }
-    fun updateEmail(email: String){
+
+    fun updateEmail(email: String) {
         _uiState.update {
             it.copy(email = email)
         }
     }
-    fun updatePassword(password: String){
+
+    fun updatePassword(password: String) {
         _uiState.update {
             it.copy(password = password)
         }
     }
-    fun updateName(name: String){
+
+    fun updateName(name: String) {
         _uiState.update {
             it.copy(name = name)
         }
     }
 }
+
 data class SignUpState(
     val email: String,
     val password: String,

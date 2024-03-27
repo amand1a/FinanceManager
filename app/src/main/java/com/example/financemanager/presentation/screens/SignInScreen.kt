@@ -33,38 +33,54 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.financemanager.R
 import com.example.financemanager.presentation.viewModel.FetchData
 import com.example.financemanager.presentation.viewModel.SignInViewModel
+
 @Composable
-fun SignInScreen(navOnMain: ()-> Unit,
-                 viewModel: SignInViewModel = viewModel()){
+fun SignInScreen(
+    navOnMain: () -> Unit,
+    viewModel: SignInViewModel = viewModel()
+) {
     val uiState = viewModel.signInState.collectAsState()
     val keyboardController = LocalSoftwareKeyboardController.current
     val localFocusManager = LocalFocusManager.current
-    if(uiState.value.fetchData == FetchData.Success) navOnMain()
+    if (uiState.value.fetchData == FetchData.Success) navOnMain()
     Box(modifier = Modifier.fillMaxSize()) {
-        Column(modifier = Modifier
-            .fillMaxHeight()
-            .fillMaxWidth(0.8f)
-            .align(Alignment.Center)) {
+        Column(
+            modifier = Modifier
+                .fillMaxHeight()
+                .fillMaxWidth(0.8f)
+                .align(Alignment.Center)
+        ) {
             Spacer(modifier = Modifier.weight(2f))
-            Text(text = "Sign In" , fontSize = 32.sp, fontWeight = FontWeight.Bold)
+            Text(
+                text = stringResource(id = R.string.sing_in),
+                fontSize = 32.sp,
+                fontWeight = FontWeight.Bold
+            )
             Spacer(modifier = Modifier.weight(0.3f))
-            TextField(value = uiState.value.email, onValueChange = {viewModel.updateEmail(it)},
-                label = { Text(stringResource(R.string.enter_email)) } , modifier = Modifier.fillMaxWidth() ,
-                colors =  TextFieldDefaults.colors(
-                    unfocusedIndicatorColor = Color.Gray ,
+            TextField(
+                value = uiState.value.email,
+                onValueChange = { viewModel.updateEmail(it) },
+                label = { Text(stringResource(R.string.enter_email)) },
+                modifier = Modifier.fillMaxWidth(),
+                colors = TextFieldDefaults.colors(
+                    unfocusedIndicatorColor = Color.Gray,
                     focusedIndicatorColor = Color(144, 202, 249, 255),
-                    unfocusedContainerColor = Color.Transparent ,
+                    unfocusedContainerColor = Color.Transparent,
                 ),
                 maxLines = 1,
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
+            )
             Spacer(modifier = Modifier.weight(0.1f))
-            TextField(value = uiState.value.password, onValueChange = {viewModel.updatePassword(it)} ,
+            TextField(
+                value = uiState.value.password,
+                onValueChange = { viewModel.updatePassword(it) },
                 visualTransformation = PasswordVisualTransformation(),
-                label = { Text(stringResource(R.string.enter_password)) }, modifier = Modifier.fillMaxWidth() ,
-                colors =  TextFieldDefaults.colors(
-                    unfocusedIndicatorColor = Color.Gray ,
-                    focusedIndicatorColor = Color(144, 202, 249, 255) ,
-                    unfocusedContainerColor = Color.Transparent ,
+                label = { Text(stringResource(R.string.enter_password)) },
+                modifier = Modifier.fillMaxWidth(),
+                colors = TextFieldDefaults.colors(
+                    unfocusedIndicatorColor = Color.Gray,
+                    focusedIndicatorColor = Color(144, 202, 249, 255),
+                    unfocusedContainerColor = Color.Transparent,
                 ),
                 maxLines = 1,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
@@ -74,26 +90,31 @@ fun SignInScreen(navOnMain: ()-> Unit,
                 })
             )
             Spacer(modifier = Modifier.weight(0.15f))
-             if(uiState.value.fetchData == FetchData.Error)Text("The password or email you’ve entered is incorrect." , color = Color.Red)
+            if (uiState.value.fetchData == FetchData.Error) Text(
+                stringResource(R.string.incorrect_password),
+                color = Color.Red
+            )
             Spacer(modifier = Modifier.weight(0.15f))
-            Button(onClick = { viewModel.checkSignIn()} ,
-                enabled = uiState.value.fetchData != FetchData.Fetching
-                , modifier = Modifier
+            Button(
+                onClick = { viewModel.checkSignIn() },
+                enabled = uiState.value.fetchData != FetchData.Fetching, modifier = Modifier
                     .fillMaxWidth()
-                    .height(75.dp) ,
+                    .height(75.dp),
                 shape = RoundedCornerShape(60f),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(33, 150, 243, 255),
-                    contentColor = Color.White)
+                    contentColor = Color.White
+                )
             ) {
-                Text(text = "Sing In" , fontSize = 24.sp)
+                Text(text = stringResource(R.string.sing_in), fontSize = 24.sp)
             }
             Spacer(modifier = Modifier.weight(0.7f))
         }
     }
 }
+
 @Preview(showBackground = true)
 @Composable
-fun PreviewSignUpScreen(){
+fun PreviewSignUpScreen() {
     SignInScreen({})
 }

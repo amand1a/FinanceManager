@@ -9,11 +9,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 @HiltViewModel
-class SignInViewModel @Inject constructor(): ViewModel(){
-    private val _signInSate = MutableStateFlow(SignInState("" , "" ,FetchData.Typing))
+class SignInViewModel @Inject constructor() : ViewModel() {
+    private val _signInSate = MutableStateFlow(SignInState("", "", FetchData.Typing))
     val signInState = _signInSate.asStateFlow()
-    fun checkSignIn(){
+    fun checkSignIn() {
         viewModelScope.launch {
             _signInSate.update {
                 it.copy(fetchData = FetchData.Fetching)
@@ -24,27 +25,31 @@ class SignInViewModel @Inject constructor(): ViewModel(){
             }
         }
     }
-    fun updateEmail(email: String){
+
+    fun updateEmail(email: String) {
         _signInSate.update {
             it.copy(email = email)
         }
     }
-    fun updatePassword(password: String){
+
+    fun updatePassword(password: String) {
         _signInSate.update {
             it.copy(password = password)
         }
     }
 }
+
 data class SignInState(
-    val email: String ,
+    val email: String,
     val password: String,
     val fetchData: FetchData
 )
-sealed interface FetchData{
-    data object Typing: FetchData
-    data object Fetching: FetchData
-    data object Success: FetchData
-    data object Error: FetchData
+
+sealed interface FetchData {
+    data object Typing : FetchData
+    data object Fetching : FetchData
+    data object Success : FetchData
+    data object Error : FetchData
 }
 
 

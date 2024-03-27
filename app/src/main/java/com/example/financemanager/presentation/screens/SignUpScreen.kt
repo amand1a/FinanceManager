@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.sp
 import com.example.financemanager.R
 import com.example.financemanager.presentation.viewModel.SignUpViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+
 @Composable
 fun SingUpScreen(viewModel: SignUpViewModel = viewModel(), navToSignIn: () -> Unit) {
     val focus = LocalFocusManager.current
@@ -45,11 +46,17 @@ fun SingUpScreen(viewModel: SignUpViewModel = viewModel(), navToSignIn: () -> Un
                 .align(Alignment.Center)
         ) {
             Spacer(modifier = Modifier.weight(2f))
-            Text(text = stringResource(R.string.sign_up), fontSize = 32.sp, fontWeight = FontWeight.Bold)
+            Text(
+                text = stringResource(R.string.sign_up),
+                fontSize = 32.sp,
+                fontWeight = FontWeight.Bold
+            )
             Spacer(modifier = Modifier.weight(0.3f))
             TextField(
-                value = uiState.value.email, onValueChange = { viewModel.updateEmail(it) },
-                label = { Text(stringResource(R.string.email)) }, modifier = Modifier.fillMaxWidth(),
+                value = uiState.value.email,
+                onValueChange = { viewModel.updateEmail(it) },
+                label = { Text(stringResource(R.string.email)) },
+                modifier = Modifier.fillMaxWidth(),
                 colors = TextFieldDefaults.colors(
                     unfocusedIndicatorColor = Color.Gray,
                     focusedIndicatorColor = Color(144, 202, 249, 255),
@@ -59,8 +66,10 @@ fun SingUpScreen(viewModel: SignUpViewModel = viewModel(), navToSignIn: () -> Un
             )
             Spacer(modifier = Modifier.weight(0.1f))
             TextField(
-                value = uiState.value.name, onValueChange = { viewModel.updateName(it) },
-                label = { Text(stringResource(R.string.user_name)) }, modifier = Modifier.fillMaxWidth(),
+                value = uiState.value.name,
+                onValueChange = { viewModel.updateName(it) },
+                label = { Text(stringResource(R.string.user_name)) },
+                modifier = Modifier.fillMaxWidth(),
                 colors = TextFieldDefaults.colors(
                     unfocusedIndicatorColor = Color.Gray,
                     focusedIndicatorColor = Color(144, 202, 249, 255),
@@ -70,9 +79,11 @@ fun SingUpScreen(viewModel: SignUpViewModel = viewModel(), navToSignIn: () -> Un
             )
             Spacer(modifier = Modifier.weight(0.1f))
             TextField(
-                value = uiState.value.password, onValueChange = { viewModel.updatePassword(it) },
+                value = uiState.value.password,
+                onValueChange = { viewModel.updatePassword(it) },
                 visualTransformation = PasswordVisualTransformation(),
-                label = { Text(stringResource(R.string.password)) }, modifier = Modifier.fillMaxWidth(),
+                label = { Text(stringResource(R.string.password)) },
+                modifier = Modifier.fillMaxWidth(),
                 colors = TextFieldDefaults.colors(
                     unfocusedIndicatorColor = Color.Gray,
                     focusedIndicatorColor = Color(144, 202, 249, 255),
@@ -101,6 +112,7 @@ fun SingUpScreen(viewModel: SignUpViewModel = viewModel(), navToSignIn: () -> Un
         }
     }
 }
+
 @Preview(showBackground = true)
 @Composable
 fun PreviewSignInScreen() {

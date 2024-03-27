@@ -36,6 +36,7 @@ import com.example.financemanager.presentation.navGraph.getBottomNavItems
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.haze
 import dev.chrisbanes.haze.hazeChild
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainContainer() {
@@ -53,7 +54,10 @@ fun MainContainer() {
                         IconButton(
                             onClick = { navController.popBackStack() }
                         ) {
-                            Icon(Icons.Default.ArrowBack, contentDescription = stringResource(R.string.back))
+                            Icon(
+                                Icons.Default.ArrowBack,
+                                contentDescription = stringResource(R.string.back)
+                            )
                         }
                     }
                 )
@@ -92,6 +96,7 @@ fun MainContainer() {
         }
     }
 }
+
 @Composable
 private fun SampleNavigationBar(
     modifier: Modifier = Modifier,
@@ -131,6 +136,7 @@ private fun SampleNavigationBar(
         }
     }
 }
+
 @Preview(showBackground = true)
 @Composable
 fun PreviewMainContainer() {
