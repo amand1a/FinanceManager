@@ -1,6 +1,5 @@
 package com.example.financemanager.presentation.screens
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -21,34 +20,27 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModel
-import com.example.financemanager.R
-import com.example.financemanager.presentation.viewModel.SignInViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.financemanager.R
 import com.example.financemanager.presentation.viewModel.FetchData
-
-
+import com.example.financemanager.presentation.viewModel.SignInViewModel
 @Composable
 fun SignInScreen(navOnMain: ()-> Unit,
                  viewModel: SignInViewModel = viewModel()){
-
     val uiState = viewModel.signInState.collectAsState()
-
     val keyboardController = LocalSoftwareKeyboardController.current
     val localFocusManager = LocalFocusManager.current
     if(uiState.value.fetchData == FetchData.Success) navOnMain()
     Box(modifier = Modifier.fillMaxSize()) {
-
         Column(modifier = Modifier
             .fillMaxHeight()
             .fillMaxWidth(0.8f)
@@ -57,7 +49,7 @@ fun SignInScreen(navOnMain: ()-> Unit,
             Text(text = "Sign In" , fontSize = 32.sp, fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.weight(0.3f))
             TextField(value = uiState.value.email, onValueChange = {viewModel.updateEmail(it)},
-                label = { Text("Enter Email") } , modifier = Modifier.fillMaxWidth() ,
+                label = { Text(stringResource(R.string.enter_email)) } , modifier = Modifier.fillMaxWidth() ,
                 colors =  TextFieldDefaults.colors(
                     unfocusedIndicatorColor = Color.Gray ,
                     focusedIndicatorColor = Color(144, 202, 249, 255),
@@ -68,7 +60,7 @@ fun SignInScreen(navOnMain: ()-> Unit,
             Spacer(modifier = Modifier.weight(0.1f))
             TextField(value = uiState.value.password, onValueChange = {viewModel.updatePassword(it)} ,
                 visualTransformation = PasswordVisualTransformation(),
-                label = { Text("Enter password") }, modifier = Modifier.fillMaxWidth() ,
+                label = { Text(stringResource(R.string.enter_password)) }, modifier = Modifier.fillMaxWidth() ,
                 colors =  TextFieldDefaults.colors(
                     unfocusedIndicatorColor = Color.Gray ,
                     focusedIndicatorColor = Color(144, 202, 249, 255) ,
@@ -80,7 +72,6 @@ fun SignInScreen(navOnMain: ()-> Unit,
                     localFocusManager.clearFocus()
                     keyboardController?.hide()
                 })
-
             )
             Spacer(modifier = Modifier.weight(0.15f))
              if(uiState.value.fetchData == FetchData.Error)Text("The password or email you’ve entered is incorrect." , color = Color.Red)
@@ -101,14 +92,8 @@ fun SignInScreen(navOnMain: ()-> Unit,
         }
     }
 }
-
 @Preview(showBackground = true)
 @Composable
 fun PreviewSignUpScreen(){
     SignInScreen({})
-}
-
-
-fun test(){
-
 }

@@ -1,6 +1,5 @@
 package com.example.financemanager.presentation.screens
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -21,10 +20,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -34,17 +32,12 @@ import androidx.compose.ui.unit.sp
 import com.example.financemanager.R
 import com.example.financemanager.presentation.viewModel.SignUpViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-
 @Composable
 fun SingUpScreen(viewModel: SignUpViewModel = viewModel(), navToSignIn: () -> Unit) {
-
     val focus = LocalFocusManager.current
     val keyboard = LocalSoftwareKeyboardController.current
-
     val uiState = viewModel.state.collectAsState()
     Box(modifier = Modifier.fillMaxSize()) {
-
-
         Column(
             modifier = Modifier
                 .fillMaxHeight()
@@ -52,11 +45,11 @@ fun SingUpScreen(viewModel: SignUpViewModel = viewModel(), navToSignIn: () -> Un
                 .align(Alignment.Center)
         ) {
             Spacer(modifier = Modifier.weight(2f))
-            Text(text = "Sign Up", fontSize = 32.sp, fontWeight = FontWeight.Bold)
+            Text(text = stringResource(R.string.sign_up), fontSize = 32.sp, fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.weight(0.3f))
             TextField(
                 value = uiState.value.email, onValueChange = { viewModel.updateEmail(it) },
-                label = { Text("Email") }, modifier = Modifier.fillMaxWidth(),
+                label = { Text(stringResource(R.string.email)) }, modifier = Modifier.fillMaxWidth(),
                 colors = TextFieldDefaults.colors(
                     unfocusedIndicatorColor = Color.Gray,
                     focusedIndicatorColor = Color(144, 202, 249, 255),
@@ -67,7 +60,7 @@ fun SingUpScreen(viewModel: SignUpViewModel = viewModel(), navToSignIn: () -> Un
             Spacer(modifier = Modifier.weight(0.1f))
             TextField(
                 value = uiState.value.name, onValueChange = { viewModel.updateName(it) },
-                label = { Text("User name") }, modifier = Modifier.fillMaxWidth(),
+                label = { Text(stringResource(R.string.user_name)) }, modifier = Modifier.fillMaxWidth(),
                 colors = TextFieldDefaults.colors(
                     unfocusedIndicatorColor = Color.Gray,
                     focusedIndicatorColor = Color(144, 202, 249, 255),
@@ -79,7 +72,7 @@ fun SingUpScreen(viewModel: SignUpViewModel = viewModel(), navToSignIn: () -> Un
             TextField(
                 value = uiState.value.password, onValueChange = { viewModel.updatePassword(it) },
                 visualTransformation = PasswordVisualTransformation(),
-                label = { Text("Password") }, modifier = Modifier.fillMaxWidth(),
+                label = { Text(stringResource(R.string.password)) }, modifier = Modifier.fillMaxWidth(),
                 colors = TextFieldDefaults.colors(
                     unfocusedIndicatorColor = Color.Gray,
                     focusedIndicatorColor = Color(144, 202, 249, 255),
@@ -102,16 +95,12 @@ fun SingUpScreen(viewModel: SignUpViewModel = viewModel(), navToSignIn: () -> Un
                     contentColor = Color.White
                 )
             ) {
-                Text(text = "Sing Up", fontSize = 24.sp)
+                Text(text = stringResource(R.string.sing_up), fontSize = 24.sp)
             }
             Spacer(modifier = Modifier.weight(0.7f))
         }
-
     }
-
 }
-
-
 @Preview(showBackground = true)
 @Composable
 fun PreviewSignInScreen() {

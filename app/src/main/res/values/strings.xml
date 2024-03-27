@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">FinanceManager</string>
+    <string name="homeTitle">Home</string>
+    <string name="createTitle">Create</string>
+    <string name="settingsTitle">Settings</string>
+    <string name="back">Back</string>
+    <string name="detailscreen">detailScreen</string>
+    <string name="enter_email">Enter Email</string>
+    <string name="enter_password">Enter password</string>
+    <string name="email">Email</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="user_name">User name</string>
+    <string name="password">Password</string>
+    <string name="sing_up">Sing Up</string>
+    <string name="sing_in">Sing In</string>
 </resources>

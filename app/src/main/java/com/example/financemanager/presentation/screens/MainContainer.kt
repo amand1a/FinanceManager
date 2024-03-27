@@ -1,6 +1,5 @@
 package com.example.financemanager.presentation.screens
 
-
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
@@ -22,6 +21,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -29,30 +30,30 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.financemanager.R
 import com.example.financemanager.presentation.navGraph.MainNavigation
-import com.example.financemanager.presentation.navGraph.bottomNavItems
+import com.example.financemanager.presentation.navGraph.getBottomNavItems
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.haze
 import dev.chrisbanes.haze.hazeChild
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainContainer(modifier: Modifier = Modifier) {
+fun MainContainer() {
+    val context = LocalContext.current
     val navController = rememberNavController()
     val hazeState = remember {
         HazeState()
     }
-    // Главный экран с Bottom Navigation
     Scaffold(
         topBar = {
-            if (navController.currentDestination?.route == MainNavigation.Home.title) {
+            if (navController.currentDestination?.route == stringResource(id = MainNavigation.Home.title)) {
                 TopAppBar(
-                    title = { Text(text = "Home") },
+                    title = { Text(text = stringResource(id = R.string.homeTitle)) },
                     navigationIcon = {
                         IconButton(
                             onClick = { navController.popBackStack() }
                         ) {
-                            Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                            Icon(Icons.Default.ArrowBack, contentDescription = stringResource(R.string.back))
                         }
                     }
                 )
@@ -74,26 +75,23 @@ fun MainContainer(modifier: Modifier = Modifier) {
             item {
                 NavHost(
                     navController = navController,
-                    startDestination = MainNavigation.Add.title,
+                    startDestination = stringResource(MainNavigation.Add.title),
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    composable(MainNavigation.Home.title) {
+                    composable(context.getString(MainNavigation.Home.title)) {
                         HomeScreen()
                     }
-                    composable(MainNavigation.Add.title) {
+                    composable(context.getString(MainNavigation.Add.title)) {
                         AddExpensesScreen()
                     }
-                    composable(MainNavigation.Details.title) {
+                    composable(context.getString(MainNavigation.Details.title)) {
                         DetailScreen()
                     }
                 }
             }
         }
     }
-
 }
-
-
 @Composable
 private fun SampleNavigationBar(
     modifier: Modifier = Modifier,
@@ -105,8 +103,8 @@ private fun SampleNavigationBar(
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
-        bottomNavItems.forEachIndexed { index, item ->
-
+        val bottomNavItems = getBottomNavItems(LocalContext.current)
+        bottomNavItems.forEachIndexed { _, item ->
             NavigationBarItem(
                 selected = item.route == currentRoute,
                 onClick = {
@@ -118,7 +116,6 @@ private fun SampleNavigationBar(
                         restoreState = true
                     }
                 },
-
                 icon = {
                     Icon(
                         imageVector = item.icon,
@@ -134,8 +131,6 @@ private fun SampleNavigationBar(
         }
     }
 }
-
-
 @Preview(showBackground = true)
 @Composable
 fun PreviewMainContainer() {

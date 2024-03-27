@@ -24,10 +24,8 @@ import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.HazeStyle
 import dev.chrisbanes.haze.haze
 import dev.chrisbanes.haze.hazeChild
-
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier) {
-
     val hazeState = remember {
         HazeState()
     }
@@ -40,10 +38,6 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                 .haze(hazeState),
             contentScale = ContentScale.FillBounds
         )
-
-
-
-
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Spacer(modifier = modifier.height(200.dp))
             Card(
@@ -61,7 +55,6 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                     ),
                 colors = CardDefaults.cardColors()
             ) {
-
             }
             Box(
                 modifier = Modifier
@@ -78,11 +71,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             )
         }
     }
-
-
 }
-
-
 @Preview(showBackground = true)
 @Composable
 fun PreviewHomeScreen() {

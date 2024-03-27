@@ -1,40 +1,36 @@
 package com.example.financemanager.presentation.navGraph
 
+import android.content.Context
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material.icons.rounded.AddCircle
 import androidx.compose.material.icons.rounded.Home
-import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.navigation.NavHostController
-
-
-sealed class MainNavigation (val title: String){
-    object Home: MainNavigation("Home")
-    object Details: MainNavigation("Details")
-    object Add : MainNavigation("Add")
+import com.example.financemanager.R
+sealed class MainNavigation (val title: Int){
+    data object Home: MainNavigation(R.string.homeTitle)
+    data object Details: MainNavigation(R.string.settingsTitle)
+    data object Add : MainNavigation(R.string.createTitle)
 }
-
-
-val bottomNavItems = listOf(
-    BottomNavItem(
-        name = "Home",
-        route = MainNavigation.Home.title,
-        icon = Icons.Rounded.Home,
-    ),
-    BottomNavItem(
-        name = "Create",
-        route = MainNavigation.Add.title,
-        icon = Icons.Rounded.AddCircle,
-    ),
-    BottomNavItem(
-        name = "Settings",
-        route = MainNavigation.Details.title,
-        icon = Icons.Rounded.AccountCircle,
-    ),
-)
-
-
+fun getBottomNavItems(context: Context): List<BottomNavItem>{
+    return listOf(
+        BottomNavItem(
+            name = context.getString(R.string.homeTitle),
+            route = context.getString(R.string.homeTitle),
+            icon = Icons.Rounded.Home,
+        ),
+        BottomNavItem(
+            name = context.getString(R.string.createTitle),
+            route = context.getString(MainNavigation.Add.title),
+            icon = Icons.Rounded.AddCircle,
+        ),
+        BottomNavItem(
+            name = context.getString(R.string.settingsTitle),
+            route = context.getString(MainNavigation.Details.title),
+            icon = Icons.Rounded.AccountCircle,
+        ),
+    )
+}
 data class BottomNavItem(
     val name: String,
     val route: String,

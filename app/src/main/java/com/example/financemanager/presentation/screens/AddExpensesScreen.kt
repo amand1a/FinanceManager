@@ -6,18 +6,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-
 @Composable
-fun AddExpensesScreen(modifier: Modifier = Modifier) {
-    var a by rememberSaveable { mutableStateOf("") }
-    TextField(value = a, onValueChange = { a = it })
+fun AddExpensesScreen() {
+    var testField by rememberSaveable { mutableStateOf("") }
+    TextField(value = testField, onValueChange = { testField = it })
 }
-
-
 @Preview
 @Composable
 fun PreviewAddExpensesScreen() {
-
 }
