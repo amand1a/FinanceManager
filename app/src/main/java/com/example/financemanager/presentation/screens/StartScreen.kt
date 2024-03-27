@@ -66,7 +66,6 @@ fun StartScreen(navToSignIn: () -> Unit, navToSignUp: () -> Unit, modifier: Modi
             Spacer(modifier = Modifier.weight(1f))
         }
     }
-
 }
 
 @Preview(showBackground = true)
