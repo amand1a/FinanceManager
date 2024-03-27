@@ -1,4 +1,5 @@
 <resources>
+    <string name="app_name">FinanceManager</string>
     <string name="food_drinks"><![CDATA[Food & Drinks]]></string>
     <string name="shopping">Shopping</string>
     <string name="transportation">Transportation</string>
