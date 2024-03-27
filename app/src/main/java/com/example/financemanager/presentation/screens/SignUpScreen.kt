@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,14 +30,13 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.financemanager.R
-import com.example.financemanager.presentation.viewModel.SignUpViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.financemanager.R
+import com.example.financemanager.presentation.viewModel.SignUpState
+import com.example.financemanager.presentation.viewModel.SignUpViewModel
 
 @Composable
 fun SingUpScreen(viewModel: SignUpViewModel = viewModel(), navToSignIn: () -> Unit) {
-    val focus = LocalFocusManager.current
-    val keyboard = LocalSoftwareKeyboardController.current
     val uiState = viewModel.state.collectAsState()
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -46,55 +46,9 @@ fun SingUpScreen(viewModel: SignUpViewModel = viewModel(), navToSignIn: () -> Un
                 .align(Alignment.Center)
         ) {
             Spacer(modifier = Modifier.weight(2f))
-            Text(
-                text = stringResource(R.string.sign_up),
-                fontSize = 32.sp,
-                fontWeight = FontWeight.Bold
-            )
+            HeaderSignUp()
             Spacer(modifier = Modifier.weight(0.3f))
-            TextField(
-                value = uiState.value.email,
-                onValueChange = { viewModel.updateEmail(it) },
-                label = { Text(stringResource(R.string.email)) },
-                modifier = Modifier.fillMaxWidth(),
-                colors = TextFieldDefaults.colors(
-                    unfocusedIndicatorColor = Color.Gray,
-                    focusedIndicatorColor = Color(144, 202, 249, 255),
-                    unfocusedContainerColor = Color.Transparent,
-                ),
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
-            )
-            Spacer(modifier = Modifier.weight(0.1f))
-            TextField(
-                value = uiState.value.name,
-                onValueChange = { viewModel.updateName(it) },
-                label = { Text(stringResource(R.string.user_name)) },
-                modifier = Modifier.fillMaxWidth(),
-                colors = TextFieldDefaults.colors(
-                    unfocusedIndicatorColor = Color.Gray,
-                    focusedIndicatorColor = Color(144, 202, 249, 255),
-                    unfocusedContainerColor = Color.Transparent,
-                ),
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
-            )
-            Spacer(modifier = Modifier.weight(0.1f))
-            TextField(
-                value = uiState.value.password,
-                onValueChange = { viewModel.updatePassword(it) },
-                visualTransformation = PasswordVisualTransformation(),
-                label = { Text(stringResource(R.string.password)) },
-                modifier = Modifier.fillMaxWidth(),
-                colors = TextFieldDefaults.colors(
-                    unfocusedIndicatorColor = Color.Gray,
-                    focusedIndicatorColor = Color(144, 202, 249, 255),
-                    unfocusedContainerColor = Color.Transparent,
-                ),
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                keyboardActions = KeyboardActions(onDone = {
-                    focus.clearFocus()
-                    keyboard?.hide()
-                })
-            )
+            ContentSignUp(viewModel = viewModel, uiState, modifier = Modifier.weight(2f))
             Spacer(modifier = Modifier.weight(0.3f))
             Button(
                 onClick = { navToSignIn() }, modifier = Modifier
@@ -110,6 +64,72 @@ fun SingUpScreen(viewModel: SignUpViewModel = viewModel(), navToSignIn: () -> Un
             }
             Spacer(modifier = Modifier.weight(0.7f))
         }
+    }
+}
+
+@Composable
+fun HeaderSignUp(modifier: Modifier = Modifier) {
+    Box(modifier = modifier) {
+        Text(
+            text = stringResource(R.string.sign_up),
+            fontSize = 32.sp,
+            fontWeight = FontWeight.Bold
+        )
+    }
+}
+
+@Composable
+fun ContentSignUp(
+    viewModel: SignUpViewModel,
+    uiState: State<SignUpState>,
+    modifier: Modifier = Modifier
+) {
+    val focus = LocalFocusManager.current
+    val keyboard = LocalSoftwareKeyboardController.current
+    Column(modifier = modifier) {
+        TextField(
+            value = uiState.value.email,
+            onValueChange = { viewModel.updateEmail(it) },
+            label = { Text(stringResource(R.string.email)) },
+            modifier = Modifier.fillMaxWidth(),
+            colors = TextFieldDefaults.colors(
+                unfocusedIndicatorColor = Color.Gray,
+                focusedIndicatorColor = Color(144, 202, 249, 255),
+                unfocusedContainerColor = Color.Transparent,
+            ),
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
+        )
+        Spacer(modifier = Modifier.height(30.dp))
+        TextField(
+            value = uiState.value.name,
+            onValueChange = { viewModel.updateName(it) },
+            label = { Text(stringResource(R.string.user_name)) },
+            modifier = Modifier.fillMaxWidth(),
+            colors = TextFieldDefaults.colors(
+                unfocusedIndicatorColor = Color.Gray,
+                focusedIndicatorColor = Color(144, 202, 249, 255),
+                unfocusedContainerColor = Color.Transparent,
+            ),
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
+        )
+        Spacer(modifier = Modifier.height(30.dp))
+        TextField(
+            value = uiState.value.password,
+            onValueChange = { viewModel.updatePassword(it) },
+            visualTransformation = PasswordVisualTransformation(),
+            label = { Text(stringResource(R.string.password)) },
+            modifier = Modifier.fillMaxWidth(),
+            colors = TextFieldDefaults.colors(
+                unfocusedIndicatorColor = Color.Gray,
+                focusedIndicatorColor = Color(144, 202, 249, 255),
+                unfocusedContainerColor = Color.Transparent,
+            ),
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(onDone = {
+                focus.clearFocus()
+                keyboard?.hide()
+            })
+        )
     }
 }
 
