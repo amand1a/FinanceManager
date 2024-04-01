@@ -59,7 +59,7 @@ class AddExpensesViewModel @Inject constructor() : ViewModel() {
 
 
     private fun getLocalDateTimeFroMillisecond(value: Long): LocalDateTime {
-        return Instant.ofEpochMilli(value ?: 1L)
+        return Instant.ofEpochMilli(value)
             .atZone(ZoneId.systemDefault())
             .toLocalDateTime()
     }
