@@ -28,4 +28,10 @@
     <string name="taxes">Taxes</string>
     <string name="house">House</string>
     <string name="other">Other</string>
+    <string name="empty_string" />
+    <string name="change">Change</string>
+    <string name="date">Date</string>
+    <string name="cancel">cancel</string>
+    <string name="ok">ok</string>
+    <string name="cost">cost</string>
 </resources>
