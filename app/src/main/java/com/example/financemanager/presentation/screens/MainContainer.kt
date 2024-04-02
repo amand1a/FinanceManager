@@ -1,9 +1,12 @@
 package com.example.financemanager.presentation.screens
 
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -14,7 +17,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults.colors
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,7 +26,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -33,11 +38,11 @@ import androidx.navigation.compose.rememberNavController
 import com.example.financemanager.R
 import com.example.financemanager.presentation.navGraph.MainNavigation
 import com.example.financemanager.presentation.navGraph.getBottomNavItems
+import com.example.financemanager.presentation.viewModel.AddExpensesViewModel
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.haze
 import dev.chrisbanes.haze.hazeChild
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainContainer() {
     val context = LocalContext.current
@@ -45,53 +50,42 @@ fun MainContainer() {
     val hazeState = remember {
         HazeState()
     }
+    val addExpensesViewModel = hiltViewModel<AddExpensesViewModel>()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
     Scaffold(
         topBar = {
-            if (navController.currentDestination?.route == stringResource(id = MainNavigation.Home.title)) {
-                TopAppBar(
-                    title = { Text(text = stringResource(id = R.string.homeTitle)) },
-                    navigationIcon = {
-                        IconButton(
-                            onClick = { navController.popBackStack() }
-                        ) {
-                            Icon(
-                                Icons.Default.ArrowBack,
-                                contentDescription = stringResource(R.string.back)
-                            )
-                        }
-                    }
-                )
-            }
+            CustomTopBar(
+                currentRoute = currentRoute ?: "",
+                onClearExpenseClick = { addExpensesViewModel.clearExpenseFields()},
+                onAddExpenseClick = { addExpensesViewModel.addExpenseInDB()},
+                onPrevMonthClick = { },
+                onNextMonthClick = {},
+                modifier = Modifier.hazeChild(hazeState))
         },
         bottomBar = {
             SampleNavigationBar(
                 navController = navController,
+                currentRoute = currentRoute ?: "",
                 modifier = Modifier.hazeChild(hazeState)
             )
         }
-    ) {
-        LazyColumn(
+    ) { contentPadding ->
+        NavHost(
+            navController = navController,
+            startDestination = stringResource(MainNavigation.Add.title),
             modifier = Modifier
                 .fillMaxSize()
-                .haze(hazeState),
-            contentPadding = it
+                .haze(hazeState)
         ) {
-            item {
-                NavHost(
-                    navController = navController,
-                    startDestination = stringResource(MainNavigation.Add.title),
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    composable(context.getString(MainNavigation.Home.title)) {
-                        HomeScreen()
-                    }
-                    composable(context.getString(MainNavigation.Add.title)) {
-                        AddExpensesScreen()
-                    }
-                    composable(context.getString(MainNavigation.Details.title)) {
-                        DetailScreen()
-                    }
-                }
+            composable(context.getString(MainNavigation.Home.title)) {
+                HomeScreen(contentPadding)
+            }
+            composable(context.getString(MainNavigation.Add.title)) {
+                AddExpensesScreen(contentPadding = contentPadding, viewModel = addExpensesViewModel)
+            }
+            composable(context.getString(MainNavigation.Details.title)) {
+                DetailScreen(contentPadding = contentPadding)
             }
         }
     }
@@ -100,14 +94,13 @@ fun MainContainer() {
 @Composable
 private fun SampleNavigationBar(
     modifier: Modifier = Modifier,
-    navController: NavController
+    navController: NavController,
+    currentRoute: String
 ) {
     NavigationBar(
         containerColor = Color.Transparent,
         modifier = modifier,
     ) {
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentRoute = navBackStackEntry?.destination?.route
         val bottomNavItems = getBottomNavItems(LocalContext.current)
         bottomNavItems.forEachIndexed { _, item ->
             NavigationBarItem(
@@ -134,6 +127,65 @@ private fun SampleNavigationBar(
                 )
             )
         }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CustomTopBar(
+    currentRoute: String,
+    onClearExpenseClick: () -> Unit,
+    onAddExpenseClick: () -> Unit,
+    onPrevMonthClick: () -> Unit,
+    onNextMonthClick: () -> Unit,
+    modifier: Modifier =Modifier
+) {
+    if (currentRoute == stringResource(id = MainNavigation.Home.title)) {
+        CenterAlignedTopAppBar(
+            title = { Text(text = stringResource(id = R.string.homeTitle),
+                textAlign = TextAlign.Center) },
+            navigationIcon = {
+                IconButton(onClick = { onNextMonthClick() }) {
+                    Icon(
+                        imageVector = Icons.Filled.ArrowBack,
+                        contentDescription = stringResource(R.string.empty_string)
+                    )
+                }
+            },
+            actions = {
+                IconButton(onClick = { onPrevMonthClick() }) {
+                    Icon(
+                        imageVector = Icons.Filled.ArrowForward,
+                        contentDescription = stringResource(id = R.string.empty_string)
+                    )
+                }
+            },
+            modifier = modifier,
+            colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
+        )
+    }
+    if (currentRoute == stringResource(id = MainNavigation.Add.title)) {
+        CenterAlignedTopAppBar(
+            title = { Text(text = stringResource(id = R.string.empty_string)) },
+            navigationIcon = {
+                IconButton(onClick = { onClearExpenseClick() }) {
+                    Icon(
+                        imageVector = Icons.Filled.Clear,
+                        contentDescription = stringResource(R.string.empty_string)
+                    )
+                }
+            },
+            actions = {
+                IconButton(onClick = { onAddExpenseClick() }) {
+                    Icon(
+                        imageVector = Icons.Filled.Check,
+                        contentDescription = stringResource(id = R.string.empty_string)
+                    )
+                }
+            },
+            modifier = modifier,
+            colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
+        )
     }
 }
 
