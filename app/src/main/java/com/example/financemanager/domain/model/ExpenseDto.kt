@@ -1,10 +1,10 @@
-package com.example.financemanager.presentation.model
+package com.example.financemanager.domain.model
 
 import java.time.LocalDateTime
 
-data class ExpensesModel(
+data class ExpenseDto(
     val id: Int,
-    val category: ExpensesCategories,
+    val category: CategoryDto,
     val date: LocalDateTime,
     val description: String,
     val value: Double
