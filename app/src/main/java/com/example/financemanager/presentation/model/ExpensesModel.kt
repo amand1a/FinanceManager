@@ -4,7 +4,7 @@ import java.time.LocalDateTime
 
 data class ExpensesModel(
     val id: Int,
-    val category: ExpensesCategories,
+    val category: CategoryModel,
     val date: LocalDateTime,
     val description: String,
     val value: Double

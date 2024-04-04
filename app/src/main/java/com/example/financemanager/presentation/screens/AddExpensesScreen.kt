@@ -59,9 +59,9 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.financemanager.R
-import com.example.financemanager.presentation.extension.CurrencyAmountInputVisualTransformation
-import com.example.financemanager.presentation.model.ArrayOfExpenses
-import com.example.financemanager.presentation.model.ExpensesCategories
+import com.example.financemanager.common.constants.ArrayOfExpenses
+import com.example.financemanager.common.extension.CurrencyAmountInputVisualTransformation
+import com.example.financemanager.presentation.model.CategoryModel
 import com.example.financemanager.presentation.viewModel.AddExpensesViewModel
 import com.example.financemanager.presentation.viewModel.getTimeInMillisecond
 import dev.chrisbanes.haze.HazeState
@@ -154,9 +154,9 @@ fun InputCostAndDescription(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InputCategory(
-    category: ExpensesCategories,
+    category: CategoryModel,
     modifier: Modifier,
-    onOkClick: (selectElem: ExpensesCategories) -> Unit
+    onOkClick: (selectElem: CategoryModel) -> Unit
 ) {
     val showDialog = remember {
         mutableStateOf(false)
@@ -218,7 +218,7 @@ fun InputCategory(
 fun CategoryInputDialog(
     showDialog: MutableState<Boolean>,
     onCancelClick: () -> Unit,
-    onOkClick: (selectElem: ExpensesCategories) -> Unit
+    onOkClick: (selectElem: CategoryModel) -> Unit
 ) {
     if (showDialog.value) {
         Dialog(onDismissRequest = { showDialog.value = false }) {
@@ -235,9 +235,9 @@ fun CategoryInputDialog(
 @Composable
 fun InfiniteItemsPicker(
     modifier: Modifier = Modifier,
-    items: List<ExpensesCategories>,
+    items: List<CategoryModel>,
     onCancelClick: () -> Unit,
-    onOkClick: (selectElem: ExpensesCategories) -> Unit
+    onOkClick: (selectElem: CategoryModel) -> Unit
 ) {
     val currentValue = remember { mutableIntStateOf(0) }
     Card(
