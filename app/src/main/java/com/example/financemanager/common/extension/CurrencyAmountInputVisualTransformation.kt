@@ -1,4 +1,4 @@
-package com.example.financemanager.presentation.extension
+package com.example.financemanager.common.extension
 
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.OffsetMapping

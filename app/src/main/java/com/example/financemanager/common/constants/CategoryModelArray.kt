@@ -1,13 +1,8 @@
-package com.example.financemanager.presentation.model
+package com.example.financemanager.common.constants
 
 import androidx.compose.ui.graphics.Color
 import com.example.financemanager.R
-
-data class CategoryModel(
-    val title: Int,
-    val icon: Int,
-    val containerColor: Color,
-)
+import com.example.financemanager.presentation.model.CategoryModel
 
 val ArrayOfExpenses = listOf(
     CategoryModel(

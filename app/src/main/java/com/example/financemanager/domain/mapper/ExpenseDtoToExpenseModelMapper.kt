@@ -1,6 +1,5 @@
-package com.example.financemanager.presentation.mapper
+package com.example.financemanager.domain.mapper
 
-import com.example.financemanager.domain.mapper.ModelMapper
 import com.example.financemanager.domain.model.ExpenseDto
 import com.example.financemanager.presentation.model.ExpensesModel
 import javax.inject.Inject

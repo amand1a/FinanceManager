@@ -2,11 +2,11 @@ package com.example.financemanager.presentation.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.financemanager.common.constants.ArrayOfExpenses
 import com.example.financemanager.domain.model.ExpenseDto
 import com.example.financemanager.domain.repository.ExpensesRepository
-import com.example.financemanager.presentation.extension.toNormalDouble
-import com.example.financemanager.presentation.mapper.CategoryModelToCategoryDtoMapper
-import com.example.financemanager.presentation.model.ArrayOfExpenses
+import com.example.financemanager.common.extension.toNormalDouble
+import com.example.financemanager.domain.model.CategoryDto
 import com.example.financemanager.presentation.model.CategoryModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +21,6 @@ import javax.inject.Inject
 @HiltViewModel
 class AddExpensesViewModel @Inject constructor(
     private val expensesRepository: ExpensesRepository,
-    private val categoryModelToCategoryDtoMapper: CategoryModelToCategoryDtoMapper,
 ) : ViewModel() {
     private val _addExpensesState = MutableStateFlow(
         AddExpensesState(
@@ -33,7 +32,11 @@ class AddExpensesViewModel @Inject constructor(
     fun addExpenseInDB() {
         viewModelScope.launch {
             val expense = ExpenseDto(
-                category = categoryModelToCategoryDtoMapper.map(state.value.category),
+                category = CategoryDto(
+                    icon = state.value.category.icon,
+                    title = state.value.category.title,
+                    containerColor = state.value.category.containerColor
+                ),
                 date = state.value.date,
                 description = state.value.description,
                 value = state.value.value.toNormalDouble()

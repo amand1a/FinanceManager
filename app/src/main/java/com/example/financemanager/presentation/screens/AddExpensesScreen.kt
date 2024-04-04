@@ -59,8 +59,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.financemanager.R
-import com.example.financemanager.presentation.extension.CurrencyAmountInputVisualTransformation
-import com.example.financemanager.presentation.model.ArrayOfExpenses
+import com.example.financemanager.common.constants.ArrayOfExpenses
+import com.example.financemanager.common.extension.CurrencyAmountInputVisualTransformation
 import com.example.financemanager.presentation.model.CategoryModel
 import com.example.financemanager.presentation.viewModel.AddExpensesViewModel
 import com.example.financemanager.presentation.viewModel.getTimeInMillisecond

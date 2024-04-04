@@ -1,4 +1,4 @@
-package com.example.financemanager.presentation.extension
+package com.example.financemanager.common.extension
 
 fun String.toNormalDouble(): Double {
     val stringWithoutComma = this.toDoubleOrNull() ?: 0.0
