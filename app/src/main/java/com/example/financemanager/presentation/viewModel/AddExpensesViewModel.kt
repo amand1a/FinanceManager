@@ -2,10 +2,12 @@ package com.example.financemanager.presentation.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.financemanager.domain.model.CategoryDto
 import com.example.financemanager.domain.model.ExpenseDto
 import com.example.financemanager.domain.repository.ExpensesRepository
+import com.example.financemanager.presentation.extension.toNormalDouble
+import com.example.financemanager.presentation.mapper.CategoryModelToCategoryDtoMapper
 import com.example.financemanager.presentation.model.ArrayOfExpenses
+import com.example.financemanager.presentation.model.CategoryModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,7 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddExpensesViewModel @Inject constructor(
-    private val expensesRepository: ExpensesRepository
+    private val expensesRepository: ExpensesRepository,
+    private val categoryModelToCategoryDtoMapper: CategoryModelToCategoryDtoMapper,
 ) : ViewModel() {
     private val _addExpensesState = MutableStateFlow(
         AddExpensesState(
@@ -30,8 +33,7 @@ class AddExpensesViewModel @Inject constructor(
     fun addExpenseInDB() {
         viewModelScope.launch {
             val expense = ExpenseDto(
-                id = 0,
-                category = state.value.category,
+                category = categoryModelToCategoryDtoMapper.map(state.value.category),
                 date = state.value.date,
                 description = state.value.description,
                 value = state.value.value.toNormalDouble()
@@ -49,7 +51,7 @@ class AddExpensesViewModel @Inject constructor(
         )
     }
 
-    fun changeExpenseCategory(expensesCategories: CategoryDto) {
+    fun changeExpenseCategory(expensesCategories: CategoryModel) {
         _addExpensesState.update {
             it.copy(category = expensesCategories)
         }
@@ -83,7 +85,7 @@ class AddExpensesViewModel @Inject constructor(
 }
 
 data class AddExpensesState(
-    val category: CategoryDto,
+    val category: CategoryModel,
     val date: LocalDateTime,
     val description: String,
     val value: String
@@ -94,10 +96,6 @@ fun LocalDateTime.getTimeInMillisecond(): Long {
     return zonedDateTime.toInstant().toEpochMilli()
 }
 
-fun String.toNormalDouble(): Double {
-    val stringWithoutComma = this.toDoubleOrNull() ?: 0.0
-    return stringWithoutComma / 100
-}
 
 
 
