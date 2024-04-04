@@ -2,7 +2,6 @@ package com.example.financemanager.presentation.model
 
 import androidx.compose.ui.graphics.Color
 import com.example.financemanager.R
-import com.example.financemanager.domain.model.CategoryDto
 
 data class CategoryModel(
     val title: Int,
