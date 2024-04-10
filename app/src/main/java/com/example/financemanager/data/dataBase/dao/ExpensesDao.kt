@@ -11,6 +11,6 @@ interface ExpensesDao {
     @Insert
     suspend fun insertExpense(expensesEntity: ExpensesEntity)
 
-    @Query("select * from expenses")
-    fun getAllExpenses(): Flow<List<ExpensesEntity>>
+    @Query("SELECT * FROM expenses WHERE strftime('%Y-%m', date) LIKE :month ")
+    fun getAllExpenses(month: String): Flow<List<ExpensesEntity>>
 }

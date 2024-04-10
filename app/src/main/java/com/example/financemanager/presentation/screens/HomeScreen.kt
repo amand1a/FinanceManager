@@ -1,6 +1,5 @@
 package com.example.financemanager.presentation.screens
 
-import android.icu.text.CaseMap.Title
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,45 +18,83 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.financemanager.R
-import com.example.financemanager.common.constants.ArrayOfExpenses
+import com.example.financemanager.presentation.viewModel.CategoryExpensesHomeModel
+import com.example.financemanager.presentation.viewModel.HomeUiState
+import com.example.financemanager.presentation.viewModel.HomeViewModel
 import com.github.tehras.charts.piechart.PieChart
 import com.github.tehras.charts.piechart.PieChartData
 import com.github.tehras.charts.piechart.animation.simpleChartAnimation
 import com.github.tehras.charts.piechart.renderer.SimpleSliceDrawer
 
 @Composable
-fun HomeScreen(contentPadding: PaddingValues, modifier: Modifier = Modifier) {
+fun HomeScreen(
+    uiState: State<HomeUiState>,
+    contentPadding: PaddingValues,
+    modifier: Modifier = Modifier,
+    viewModel: HomeViewModel = viewModel(),
+) {
+
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())
             .padding(contentPadding)
     ) {
-        ChartPieContainer()
-        Spacer(modifier = modifier.height(16.dp))
-        ExpensesCategories()
+        when (uiState.value) {
+            is HomeUiState.Error -> {
+                Text(text = stringResource(R.string.error))
+                Button(onClick = { viewModel.reload() }) {
+                    Text(text = stringResource(R.string.reload))
+                }
+            }
+
+            is HomeUiState.Fetching -> {
+                Text(text = stringResource(R.string.data_is_fetching))
+            }
+
+            is HomeUiState.LoadedHomeData -> {
+                val loadedState = uiState.value as HomeUiState.LoadedHomeData
+                ChartPieContainer(
+                    totalCost = loadedState.totalCost,
+                    listOfCategories = loadedState.categories
+                )
+                Spacer(modifier = modifier.height(16.dp))
+                ExpensesCategories(loadedState.categories)
+            }
+        }
     }
 }
 
 @Composable
-fun ChartPieContainer(modifier: Modifier = Modifier) {
+fun ChartPieContainer(
+    totalCost: Double,
+    listOfCategories: List<CategoryExpensesHomeModel>,
+    modifier: Modifier = Modifier
+) {
+    val dataForChart = listOfCategories.map {
+        PieChartData.Slice(
+            value = it.costCategory,
+            color = it.category.containerColor
+        )
+    }
     Box(
         modifier = modifier
             .height(300.dp)
@@ -65,18 +102,14 @@ fun ChartPieContainer(modifier: Modifier = Modifier) {
     ) {
         PieChart(
             pieChartData = PieChartData(
-                listOf(
-                    PieChartData.Slice(12f, Color.Red),
-                    PieChartData.Slice(12f, Color.Yellow),
-                    PieChartData.Slice(0f, Color.Gray)
-                )
+                dataForChart
             ),
             modifier = Modifier.fillMaxSize(),
             animation = simpleChartAnimation(),
             sliceDrawer = SimpleSliceDrawer(sliceThickness = 40f)
         )
         Text(
-            text = "1200",
+            text = totalCost.toString(),
             modifier = Modifier.align(Alignment.Center),
             fontSize = 24.sp
         )
@@ -84,15 +117,19 @@ fun ChartPieContainer(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun ExpensesCategories(modifier: Modifier = Modifier) {
-    Box(modifier = modifier.padding(start = 4.dp, end = 4.dp).fillMaxWidth().wrapContentHeight()) {
+fun ExpensesCategories(
+    listOfCategories: List<CategoryExpensesHomeModel>,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .padding(start = 4.dp, end = 4.dp)
+            .fillMaxWidth()
+            .wrapContentHeight()
+    ) {
         LazyColumn(modifier = Modifier.heightIn(max = 1000.dp)) {
-            items(ArrayOfExpenses) {
-                CategoryCard(
-                    title = it.title,
-                    icon = it.icon,
-                    categoryColor = it.containerColor
-                )
+            items(listOfCategories) {
+                CategoryCard(it)
             }
         }
     }
@@ -100,9 +137,7 @@ fun ExpensesCategories(modifier: Modifier = Modifier) {
 
 @Composable
 fun CategoryCard(
-    title: Int,
-    icon: Int,
-    categoryColor: Color
+    categoryExpensesHomeModel: CategoryExpensesHomeModel
 ) {
     val isExpand = remember {
         mutableStateOf(false)
@@ -114,9 +149,9 @@ fun CategoryCard(
         Column {
             Box(
                 modifier = Modifier
-                    .fillMaxWidth(0.3f)
+                    .fillMaxWidth(categoryExpensesHomeModel.percentCostCategory / 100)
                     .height(8.dp)
-                    .background(categoryColor)
+                    .background(categoryExpensesHomeModel.category.containerColor)
             )
             Row(
                 modifier = Modifier
@@ -125,17 +160,26 @@ fun CategoryCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    painterResource(id = icon),
+                    painterResource(id = categoryExpensesHomeModel.category.icon),
                     contentDescription = stringResource(id = R.string.empty_string),
-                    tint = categoryColor
+                    tint = categoryExpensesHomeModel.category.containerColor
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = stringResource(id = title), fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
+                Column {
+                    Text(
+                        text = stringResource(id = categoryExpensesHomeModel.category.title),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Text(
+                        text = categoryExpensesHomeModel.costCategory.toString(),
+                        fontSize = 16.sp,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
                 Spacer(Modifier.weight(1f))
                 IconButton(onClick = { isExpand.value = !isExpand.value }) {
                     Icon(
@@ -155,11 +199,5 @@ fun CategoryCard(
 
 @Composable
 fun ListOfExpenseCategory() {
-
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewHomeScreen() {
-    HomeScreen(PaddingValues())
+    //coming soon
 }

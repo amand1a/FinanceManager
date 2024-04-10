@@ -34,4 +34,7 @@
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
     <string name="cost">cost</string>
+    <string name="error">error</string>
+    <string name="reload">reload</string>
+    <string name="data_is_fetching">data is fetching</string>
 </resources>
