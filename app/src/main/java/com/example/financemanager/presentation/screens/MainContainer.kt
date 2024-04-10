@@ -1,12 +1,9 @@
 package com.example.financemanager.presentation.screens
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -42,32 +39,29 @@ import com.example.financemanager.presentation.navGraph.MainNavigation
 import com.example.financemanager.presentation.navGraph.getBottomNavItems
 import com.example.financemanager.presentation.viewModel.AddExpensesViewModel
 import com.example.financemanager.presentation.viewModel.HomeViewModel
+import com.example.financemanager.presentation.viewModel.MainContainerViewModel
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.haze
 import dev.chrisbanes.haze.hazeChild
+import androidx.lifecycle.viewmodel.compose.viewModel
 
-@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun MainContainer() {
+fun MainContainer(viewModel: MainContainerViewModel = viewModel()) {
     val context = LocalContext.current
     val navController = rememberNavController()
     val hazeState = remember {
         HazeState()
     }
-    val addExpensesViewModel = hiltViewModel<AddExpensesViewModel>()
-    val homeViewModel = hiltViewModel<HomeViewModel>()
-    val homeUiState = homeViewModel.uiState.collectAsState()
+    val uiState = viewModel.uiState.collectAsState()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
     Scaffold(
         topBar = {
             CustomTopBar(
-                monthName = homeUiState.value.getLocalDate().month.name,
+                monthName = uiState.value.selectedMonth.month.name,
                 currentRoute = currentRoute ?: "",
-                onClearExpenseClick = { addExpensesViewModel.clearExpenseFields() },
-                onAddExpenseClick = { addExpensesViewModel.addExpenseInDB() },
-                onPrevMonthClick = { homeViewModel.getPrevMoth() },
-                onNextMonthClick = { homeViewModel.getNextMoth() },
+                onPrevMonthClick = { viewModel.getPrevMoth() },
+                onNextMonthClick = { viewModel.getNextMoth() },
                 modifier = Modifier.hazeChild(hazeState)
             )
         },
@@ -87,13 +81,15 @@ fun MainContainer() {
                 .haze(hazeState)
         ) {
             composable(context.getString(MainNavigation.Home.title)) {
+                val homeViewModel = hiltViewModel<HomeViewModel>()
                 HomeScreen(
-                    uiState = homeUiState,
+                    selectedDate = uiState.value.selectedMonth,
                     viewModel = homeViewModel,
                     contentPadding = contentPadding
                 )
             }
             composable(context.getString(MainNavigation.Add.title)) {
+                val addExpensesViewModel = hiltViewModel<AddExpensesViewModel>()
                 AddExpensesScreen(contentPadding = contentPadding, viewModel = addExpensesViewModel)
             }
             composable(context.getString(MainNavigation.Details.title)) {
@@ -147,8 +143,6 @@ private fun SampleNavigationBar(
 fun CustomTopBar(
     monthName: String,
     currentRoute: String,
-    onClearExpenseClick: () -> Unit,
-    onAddExpenseClick: () -> Unit,
     onPrevMonthClick: () -> Unit,
     onNextMonthClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -173,29 +167,6 @@ fun CustomTopBar(
                 IconButton(onClick = { onPrevMonthClick() }) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                        contentDescription = stringResource(id = R.string.empty_string)
-                    )
-                }
-            },
-            modifier = modifier,
-            colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
-        )
-    }
-    if (currentRoute == stringResource(id = MainNavigation.Add.title)) {
-        CenterAlignedTopAppBar(
-            title = { Text(text = stringResource(id = R.string.empty_string)) },
-            navigationIcon = {
-                IconButton(onClick = { onClearExpenseClick() }) {
-                    Icon(
-                        imageVector = Icons.Filled.Clear,
-                        contentDescription = stringResource(R.string.empty_string)
-                    )
-                }
-            },
-            actions = {
-                IconButton(onClick = { onAddExpenseClick() }) {
-                    Icon(
-                        imageVector = Icons.Filled.Check,
                         contentDescription = stringResource(id = R.string.empty_string)
                     )
                 }

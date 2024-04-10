@@ -24,7 +24,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -37,22 +38,26 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.financemanager.R
-import com.example.financemanager.presentation.viewModel.CategoryExpensesHomeModel
+import com.example.financemanager.presentation.model.CategoryExpensesHomeModel
 import com.example.financemanager.presentation.viewModel.HomeUiState
 import com.example.financemanager.presentation.viewModel.HomeViewModel
 import com.github.tehras.charts.piechart.PieChart
 import com.github.tehras.charts.piechart.PieChartData
 import com.github.tehras.charts.piechart.animation.simpleChartAnimation
 import com.github.tehras.charts.piechart.renderer.SimpleSliceDrawer
+import java.time.LocalDateTime
 
 @Composable
 fun HomeScreen(
-    uiState: State<HomeUiState>,
+    selectedDate: LocalDateTime,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = viewModel(),
 ) {
-
+    LaunchedEffect(key1 = selectedDate){
+        viewModel.start(selectedDate)
+    }
+    val uiState = viewModel.uiState.collectAsState()
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())

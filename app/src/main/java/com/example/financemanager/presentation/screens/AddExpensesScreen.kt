@@ -20,6 +20,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -27,6 +30,7 @@ import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
@@ -85,6 +89,8 @@ fun AddExpensesScreen(
             .padding(contentPadding)
             .haze(hazeState)
     ) {
+        SaveAndClearButtons(onClearExpenseClick = { viewModel.clearExpenseFields() },
+            onAddExpenseClick = { viewModel.addExpenseInDB() })
         Spacer(modifier = Modifier.height(30.dp))
         InputCostAndDescription(
             costValue = uiState.value.value,
@@ -102,6 +108,28 @@ fun AddExpensesScreen(
         Spacer(modifier = Modifier.height(16.dp))
         InputDate(dateTime = uiState.value.date,
             onDateChange = { viewModel.changeDateOfExpense(it) })
+    }
+}
+
+@Composable
+fun SaveAndClearButtons(
+    onClearExpenseClick: () -> Unit,
+    onAddExpenseClick: () -> Unit,
+) {
+    Row {
+        IconButton(onClick = { onClearExpenseClick() }) {
+            Icon(
+                imageVector = Icons.Filled.Clear,
+                contentDescription = stringResource(R.string.empty_string)
+            )
+        }
+        Spacer(modifier = Modifier.weight(1f))
+        IconButton(onClick = { onAddExpenseClick() }) {
+            Icon(
+                imageVector = Icons.Filled.Check,
+                contentDescription = stringResource(id = R.string.empty_string)
+            )
+        }
     }
 }
 
@@ -151,7 +179,6 @@ fun InputCostAndDescription(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InputCategory(
     category: CategoryModel,
