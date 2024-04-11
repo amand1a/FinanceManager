@@ -37,13 +37,10 @@ import androidx.navigation.compose.rememberNavController
 import com.example.financemanager.R
 import com.example.financemanager.presentation.navGraph.MainNavigation
 import com.example.financemanager.presentation.navGraph.getBottomNavItems
-import com.example.financemanager.presentation.viewModel.AddExpensesViewModel
-import com.example.financemanager.presentation.viewModel.HomeViewModel
 import com.example.financemanager.presentation.viewModel.MainContainerViewModel
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.haze
 import dev.chrisbanes.haze.hazeChild
-import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun MainContainer(viewModel: MainContainerViewModel = hiltViewModel()) {

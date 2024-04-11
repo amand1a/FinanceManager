@@ -62,7 +62,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.financemanager.R
 import com.example.financemanager.common.constants.ArrayOfExpenses
 import com.example.financemanager.common.extension.CurrencyAmountInputVisualTransformation
