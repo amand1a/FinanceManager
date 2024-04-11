@@ -36,7 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.financemanager.R
 import com.example.financemanager.presentation.model.CategoryExpensesHomeModel
 import com.example.financemanager.presentation.viewModel.HomeUiState
@@ -52,7 +52,7 @@ fun HomeScreen(
     selectedDate: LocalDateTime,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = viewModel(),
+    viewModel: HomeViewModel = hiltViewModel(),
 ) {
     LaunchedEffect(key1 = selectedDate){
         viewModel.start(selectedDate)

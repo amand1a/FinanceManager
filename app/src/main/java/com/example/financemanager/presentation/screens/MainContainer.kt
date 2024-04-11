@@ -46,7 +46,7 @@ import dev.chrisbanes.haze.hazeChild
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun MainContainer(viewModel: MainContainerViewModel = viewModel()) {
+fun MainContainer(viewModel: MainContainerViewModel = hiltViewModel()) {
     val context = LocalContext.current
     val navController = rememberNavController()
     val hazeState = remember {
@@ -81,16 +81,13 @@ fun MainContainer(viewModel: MainContainerViewModel = viewModel()) {
                 .haze(hazeState)
         ) {
             composable(context.getString(MainNavigation.Home.title)) {
-                val homeViewModel = hiltViewModel<HomeViewModel>()
                 HomeScreen(
                     selectedDate = uiState.value.selectedMonth,
-                    viewModel = homeViewModel,
                     contentPadding = contentPadding
                 )
             }
             composable(context.getString(MainNavigation.Add.title)) {
-                val addExpensesViewModel = hiltViewModel<AddExpensesViewModel>()
-                AddExpensesScreen(contentPadding = contentPadding, viewModel = addExpensesViewModel)
+                AddExpensesScreen(contentPadding = contentPadding)
             }
             composable(context.getString(MainNavigation.Details.title)) {
                 DetailScreen(contentPadding = contentPadding)

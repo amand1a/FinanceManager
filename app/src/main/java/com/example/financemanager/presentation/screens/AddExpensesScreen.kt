@@ -61,6 +61,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.financemanager.R
 import com.example.financemanager.common.constants.ArrayOfExpenses
@@ -75,7 +76,7 @@ import java.time.LocalDateTime
 @Composable
 fun AddExpensesScreen(
     contentPadding: PaddingValues,
-    viewModel: AddExpensesViewModel = viewModel(),
+    viewModel: AddExpensesViewModel = hiltViewModel(),
 ) {
     val focus = LocalFocusManager.current
     val hazeState = remember {
