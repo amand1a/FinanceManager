@@ -2,10 +2,8 @@ package com.example.financemanager.presentation.screens
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -20,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -38,30 +37,30 @@ import androidx.navigation.compose.rememberNavController
 import com.example.financemanager.R
 import com.example.financemanager.presentation.navGraph.MainNavigation
 import com.example.financemanager.presentation.navGraph.getBottomNavItems
-import com.example.financemanager.presentation.viewModel.AddExpensesViewModel
+import com.example.financemanager.presentation.viewModel.MainContainerViewModel
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.haze
 import dev.chrisbanes.haze.hazeChild
 
 @Composable
-fun MainContainer() {
+fun MainContainer(viewModel: MainContainerViewModel = hiltViewModel()) {
     val context = LocalContext.current
     val navController = rememberNavController()
     val hazeState = remember {
         HazeState()
     }
-    val addExpensesViewModel = hiltViewModel<AddExpensesViewModel>()
+    val uiState = viewModel.uiState.collectAsState()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
     Scaffold(
         topBar = {
             CustomTopBar(
+                monthName = uiState.value.selectedMonth.month.name,
                 currentRoute = currentRoute ?: "",
-                onClearExpenseClick = { addExpensesViewModel.clearExpenseFields()},
-                onAddExpenseClick = { addExpensesViewModel.addExpenseInDB()},
-                onPrevMonthClick = { },
-                onNextMonthClick = {},
-                modifier = Modifier.hazeChild(hazeState))
+                onPrevMonthClick = { viewModel.getPrevMoth() },
+                onNextMonthClick = { viewModel.getNextMoth() },
+                modifier = Modifier.hazeChild(hazeState)
+            )
         },
         bottomBar = {
             SampleNavigationBar(
@@ -79,10 +78,13 @@ fun MainContainer() {
                 .haze(hazeState)
         ) {
             composable(context.getString(MainNavigation.Home.title)) {
-                HomeScreen(contentPadding)
+                HomeScreen(
+                    selectedDate = uiState.value.selectedMonth,
+                    contentPadding = contentPadding
+                )
             }
             composable(context.getString(MainNavigation.Add.title)) {
-                AddExpensesScreen(contentPadding = contentPadding, viewModel = addExpensesViewModel)
+                AddExpensesScreen(contentPadding = contentPadding)
             }
             composable(context.getString(MainNavigation.Details.title)) {
                 DetailScreen(contentPadding = contentPadding)
@@ -133,21 +135,24 @@ private fun SampleNavigationBar(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomTopBar(
+    monthName: String,
     currentRoute: String,
-    onClearExpenseClick: () -> Unit,
-    onAddExpenseClick: () -> Unit,
     onPrevMonthClick: () -> Unit,
     onNextMonthClick: () -> Unit,
-    modifier: Modifier =Modifier
+    modifier: Modifier = Modifier
 ) {
     if (currentRoute == stringResource(id = MainNavigation.Home.title)) {
         CenterAlignedTopAppBar(
-            title = { Text(text = stringResource(id = R.string.homeTitle),
-                textAlign = TextAlign.Center) },
+            title = {
+                Text(
+                    text = monthName,
+                    textAlign = TextAlign.Center
+                )
+            },
             navigationIcon = {
                 IconButton(onClick = { onNextMonthClick() }) {
                     Icon(
-                        imageVector = Icons.Filled.ArrowBack,
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = stringResource(R.string.empty_string)
                     )
                 }
@@ -155,30 +160,7 @@ fun CustomTopBar(
             actions = {
                 IconButton(onClick = { onPrevMonthClick() }) {
                     Icon(
-                        imageVector = Icons.Filled.ArrowForward,
-                        contentDescription = stringResource(id = R.string.empty_string)
-                    )
-                }
-            },
-            modifier = modifier,
-            colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
-        )
-    }
-    if (currentRoute == stringResource(id = MainNavigation.Add.title)) {
-        CenterAlignedTopAppBar(
-            title = { Text(text = stringResource(id = R.string.empty_string)) },
-            navigationIcon = {
-                IconButton(onClick = { onClearExpenseClick() }) {
-                    Icon(
-                        imageVector = Icons.Filled.Clear,
-                        contentDescription = stringResource(R.string.empty_string)
-                    )
-                }
-            },
-            actions = {
-                IconButton(onClick = { onAddExpenseClick() }) {
-                    Icon(
-                        imageVector = Icons.Filled.Check,
+                        imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                         contentDescription = stringResource(id = R.string.empty_string)
                     )
                 }

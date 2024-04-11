@@ -3,17 +3,17 @@ package com.example.financemanager.presentation.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.financemanager.common.constants.ArrayOfExpenses
-import com.example.financemanager.domain.model.ExpenseDto
-import com.example.financemanager.domain.repository.ExpensesRepository
+import com.example.financemanager.common.extension.getLocalDateTimeFroMillisecond
 import com.example.financemanager.common.extension.toNormalDouble
 import com.example.financemanager.domain.model.CategoryDto
+import com.example.financemanager.domain.model.ExpenseDto
+import com.example.financemanager.domain.repository.ExpensesRepository
 import com.example.financemanager.presentation.model.CategoryModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 import javax.inject.Inject
@@ -62,7 +62,7 @@ class AddExpensesViewModel @Inject constructor(
 
     fun changeDateOfExpense(localDateTime: Long) {
         _addExpensesState.update {
-            it.copy(date = getLocalDateTimeFroMillisecond(localDateTime))
+            it.copy(date = localDateTime.getLocalDateTimeFroMillisecond())
         }
     }
 
@@ -77,14 +77,6 @@ class AddExpensesViewModel @Inject constructor(
             it.copy(description = value)
         }
     }
-
-
-    private fun getLocalDateTimeFroMillisecond(value: Long): LocalDateTime {
-        return Instant.ofEpochMilli(value)
-            .atZone(ZoneId.systemDefault())
-            .toLocalDateTime()
-    }
-
 }
 
 data class AddExpensesState(

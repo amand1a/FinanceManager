@@ -50,10 +50,7 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-
 }
-
-
 
 dependencies {
 
@@ -81,6 +78,13 @@ dependencies {
     ksp("androidx.room:room-compiler:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
     annotationProcessor ("androidx.room:room-compiler:2.6.1")
+    //Charts
+    implementation("com.patrykandpatrick.vico:compose:2.0.0-alpha.14")
+    implementation("com.patrykandpatrick.vico:compose-m3:2.0.0-alpha.14")
+    implementation("com.patrykandpatrick.vico:core:2.0.0-alpha.14")
+    implementation("com.patrykandpatrick.vico:views:2.0.0-alpha.14")
+    implementation ("com.github.tehras:charts:0.2.4-alpha")
+
 
 
     implementation("dev.chrisbanes.haze:haze:0.6.2")

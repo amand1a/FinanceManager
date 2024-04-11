@@ -2,14 +2,14 @@ package com.example.financemanager.data.dataBase.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.financemanager.domain.model.CategoryDto
+import com.example.financemanager.data.model.CategoryDataModel
 import java.time.LocalDateTime
 
 @Entity(tableName = "expenses")
 data class ExpensesEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
-    val category: CategoryDto,
+    val id: Long? = null,
+    val category: CategoryDataModel,
     val date: LocalDateTime,
     val description: String,
     val value: Double
