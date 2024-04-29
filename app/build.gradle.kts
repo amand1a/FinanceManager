@@ -54,9 +54,9 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.core:core-ktx:1.13.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
-    implementation("androidx.activity:activity-compose:1.8.2")
+    implementation("androidx.activity:activity-compose:1.9.0")
     implementation(platform("androidx.compose:compose-bom:2023.08.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
@@ -72,7 +72,7 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:2.49")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
     //dataStore
-    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation("androidx.datastore:datastore-preferences:1.1.0")
     //Room
     implementation("androidx.room:room-runtime:2.6.1")
     ksp("androidx.room:room-compiler:2.6.1")
@@ -84,8 +84,6 @@ dependencies {
     implementation("com.patrykandpatrick.vico:core:2.0.0-alpha.14")
     implementation("com.patrykandpatrick.vico:views:2.0.0-alpha.14")
     implementation ("com.github.tehras:charts:0.2.4-alpha")
-
-
 
     implementation("dev.chrisbanes.haze:haze:0.6.2")
     testImplementation("junit:junit:4.13.2")

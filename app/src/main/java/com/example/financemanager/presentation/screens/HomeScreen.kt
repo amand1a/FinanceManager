@@ -88,10 +88,11 @@ fun HomeScreen(
                 val loadedState = uiState.value as HomeUiState.LoadedHomeData
                 ChartPieContainer(
                     totalCost = loadedState.totalCost,
-                    listOfCategories = loadedState.categories
+                    listOfCategories = loadedState.categories,
+                    currencyName = loadedState.currencyName
                 )
                 Spacer(modifier = modifier.height(16.dp))
-                ExpensesCategories(loadedState.categories)
+                ExpensesCategories(loadedState.categories, loadedState.currencyName)
             }
         }
     }
@@ -101,7 +102,8 @@ fun HomeScreen(
 fun ChartPieContainer(
     totalCost: Double,
     listOfCategories: List<CategoryExpensesHomeModel>,
-    modifier: Modifier = Modifier
+    currencyName: String,
+    modifier: Modifier = Modifier,
 ) {
     val dataForChart = listOfCategories.map {
         PieChartData.Slice(
@@ -123,7 +125,7 @@ fun ChartPieContainer(
             sliceDrawer = SimpleSliceDrawer(sliceThickness = 40f)
         )
         Text(
-            text = String.format("%.2f", totalCost.toString()),
+            text = String.format("%.2f", totalCost) + currencyName,
             modifier = Modifier.align(Alignment.Center),
             fontSize = 24.sp
         )
@@ -133,6 +135,7 @@ fun ChartPieContainer(
 @Composable
 fun ExpensesCategories(
     listOfCategories: List<CategoryExpensesHomeModel>,
+    currencyName: String,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -143,7 +146,7 @@ fun ExpensesCategories(
     ) {
         LazyColumn(modifier = Modifier.heightIn(max = 10000.dp)) {
             items(listOfCategories) {
-                CategoryCard(it)
+                CategoryCard(it, currencyName)
             }
         }
     }
@@ -151,7 +154,8 @@ fun ExpensesCategories(
 
 @Composable
 fun CategoryCard(
-    categoryExpensesHomeModel: CategoryExpensesHomeModel
+    categoryExpensesHomeModel: CategoryExpensesHomeModel,
+    currencyName: String
 ) {
     val isExpand = remember {
         mutableStateOf(false)
@@ -201,7 +205,7 @@ fun CategoryCard(
                         overflow = TextOverflow.Ellipsis
                     )
                     Text(
-                        text = categoryExpensesHomeModel.costCategory.toString(),
+                        text = categoryExpensesHomeModel.costCategory.toString() + currencyName,
                         fontSize = 16.sp,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
@@ -220,7 +224,7 @@ fun CategoryCard(
                 }
             }
             if (isExpand.value) {
-                ListOfExpenseCategory(categoryExpensesHomeModel.expenses)
+                ListOfExpenseCategory(categoryExpensesHomeModel.expenses, currencyName)
             }
         }
     }
@@ -238,16 +242,20 @@ fun HomeFetchingScreen() {
 }
 
 @Composable
-fun ListOfExpenseCategory(listOfExpenses: List<ExpensesModel>) {
+fun ListOfExpenseCategory(listOfExpenses: List<ExpensesModel>, currencyName: String) {
     LazyColumn(modifier = Modifier.heightIn(max = 10000.dp)) {
         items(listOfExpenses) {
-            CardOfExpense(expensesModel = it)
+            CardOfExpense(expensesModel = it, currencyName)
         }
     }
 }
 
 @Composable
-fun CardOfExpense(expensesModel: ExpensesModel, modifier: Modifier = Modifier) {
+fun CardOfExpense(
+    expensesModel: ExpensesModel,
+    currencyName: String,
+    modifier: Modifier = Modifier
+) {
     Card(
         modifier = modifier
             .padding(4.dp)
@@ -259,7 +267,7 @@ fun CardOfExpense(expensesModel: ExpensesModel, modifier: Modifier = Modifier) {
     ) {
         Column(modifier = Modifier.padding(4.dp)) {
             Row {
-                Text(text = expensesModel.value.toString())
+                Text(text = expensesModel.value.toString() + " " + currencyName)
                 Spacer(modifier = Modifier.weight(1f))
                 Text(text = expensesModel.date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
             }
