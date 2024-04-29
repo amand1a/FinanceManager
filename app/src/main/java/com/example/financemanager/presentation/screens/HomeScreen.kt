@@ -92,7 +92,7 @@ fun HomeScreen(
                     currencyName = loadedState.currencyName
                 )
                 Spacer(modifier = modifier.height(16.dp))
-                ExpensesCategories(loadedState.categories , loadedState.currencyName)
+                ExpensesCategories(loadedState.categories, loadedState.currencyName)
             }
         }
     }
@@ -125,7 +125,7 @@ fun ChartPieContainer(
             sliceDrawer = SimpleSliceDrawer(sliceThickness = 40f)
         )
         Text(
-            text = String.format("%.2f", totalCost)+currencyName,
+            text = String.format("%.2f", totalCost) + currencyName,
             modifier = Modifier.align(Alignment.Center),
             fontSize = 24.sp
         )
@@ -146,7 +146,7 @@ fun ExpensesCategories(
     ) {
         LazyColumn(modifier = Modifier.heightIn(max = 10000.dp)) {
             items(listOfCategories) {
-                CategoryCard(it,currencyName )
+                CategoryCard(it, currencyName)
             }
         }
     }
@@ -205,7 +205,7 @@ fun CategoryCard(
                         overflow = TextOverflow.Ellipsis
                     )
                     Text(
-                        text = categoryExpensesHomeModel.costCategory.toString()+currencyName,
+                        text = categoryExpensesHomeModel.costCategory.toString() + currencyName,
                         fontSize = 16.sp,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
