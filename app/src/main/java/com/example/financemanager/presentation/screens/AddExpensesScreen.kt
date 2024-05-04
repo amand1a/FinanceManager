@@ -130,7 +130,6 @@ fun AddExpensesScreen(
         HorizontalPager(state = pagerState, modifier = Modifier.fillMaxSize()) {
             when (it) {
                 0 -> {
-                    val viewModel: AddExpensesViewModel = hiltViewModel()
                     AddExpense(focus = focus)
                 }
 
@@ -214,7 +213,7 @@ fun InputTime(
     }
     val timePickerState = rememberTimePickerState(
         time.hour, time.minute, true
-    );
+    )
     Row(verticalAlignment = Alignment.CenterVertically) {
         OutlinedTextField(
             readOnly = true,
