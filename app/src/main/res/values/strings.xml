@@ -38,4 +38,8 @@
     <string name="reload">reload</string>
     <string name="data_is_fetching">data is fetching</string>
     <string name="currency_name">currency name</string>
+    <string name="expense">Expense</string>
+    <string name="planned_expense">Planned Expense</string>
+    <string name="set_time">Set time</string>
+    <string name="time">time</string>
 </resources>
