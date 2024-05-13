@@ -1,8 +1,10 @@
 package com.example.financemanager.di.modules
 
 import com.example.financemanager.data.repository.ExpensesRepositoryImpl
+import com.example.financemanager.data.repository.PlannedExpenseRepositoryImpl
 import com.example.financemanager.data.repository.SettingsRepositoryImpl
 import com.example.financemanager.domain.repository.ExpensesRepository
+import com.example.financemanager.domain.repository.PlannedExpenseRepository
 import com.example.financemanager.domain.repository.SettingsRepository
 import dagger.Module
 import dagger.Provides
@@ -19,6 +21,11 @@ class RepositoryModule {
 
     @Provides
     fun getSettingsRepository(impl: SettingsRepositoryImpl): SettingsRepository{
+        return impl
+    }
+
+    @Provides
+    fun getPlannedExpenseRepository(impl: PlannedExpenseRepositoryImpl): PlannedExpenseRepository{
         return impl
     }
 }

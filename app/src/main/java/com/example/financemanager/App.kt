@@ -18,7 +18,6 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        createNotifyChannel()
     }
 
     private fun createNotifyChannel(){
@@ -35,8 +34,6 @@ class App : Application() {
 
             notificationManager?.createNotificationChannel(channel)
         }
-
-        PlannedExpenditureWorkManager.notifyPlannedExpenditure(this,"ddwa")
 
     }
 }

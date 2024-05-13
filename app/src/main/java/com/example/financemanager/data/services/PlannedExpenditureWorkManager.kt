@@ -19,11 +19,10 @@ import com.example.financemanager.R
 class PlannedExpenditureWorkManager(val ctx: Context, val params: WorkerParameters) :
     CoroutineWorker(ctx, params) {
     override suspend fun doWork(): Result {
+        val title = inputData.getString("title") ?: ""
+        notifyPlannedExpenditure(ctx, title)
         return Result.success()
     }
-
-
-
 
     companion object {
         const val Planned_Expenditure_Notification = "planned expenditure"
@@ -31,7 +30,7 @@ class PlannedExpenditureWorkManager(val ctx: Context, val params: WorkerParamete
         fun notifyPlannedExpenditure(context: Context,message: String){
             /*val deleteIntent = Intent(context, YourBroadcastReceiver::class.java)
             deleteIntent.action = "notification_swiped"
-            val deletePendingIntent = PendingIntent.getBroadcast(context, 0, deleteIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+            val deletePendingIntent = PendingIntent.getBroadcast(context, 0, deleteIntent, PendingIntent.FLAG_UPDATE_CURRENT)*/
 
             val builder = NotificationCompat.Builder(context, PlannedExpenditureWorkManager.Planned_Expenditure_Notification)
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
@@ -39,9 +38,6 @@ class PlannedExpenditureWorkManager(val ctx: Context, val params: WorkerParamete
                 .setContentText(message)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setVibrate(LongArray(0))
-                .addAction(R.drawable.ic_delete, "Delete", deletePendingIntent)
-
-            */
             // Show the notification
             if (ActivityCompat.checkSelfPermission(
                     context,
@@ -57,10 +53,7 @@ class PlannedExpenditureWorkManager(val ctx: Context, val params: WorkerParamete
                 // for ActivityCompat#requestPermissions for more details.
                 return
             }
-            //NotificationManagerCompat.from(context).notify(1, builder.build())
+            NotificationManagerCompat.from(context).notify(1, builder.build())
         }
     }
-
-
-
 }

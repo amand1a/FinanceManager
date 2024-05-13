@@ -175,10 +175,11 @@ fun AddPlannedExpense(
     focus: FocusManager,
     viewModel: AddPlanedExpenseViewModel = hiltViewModel()
 ) {
+    val ctx =  LocalContext.current
     val uiState = viewModel.state.collectAsState()
     Column(modifier = Modifier.fillMaxSize()) {
         SaveAndClearButtons(onClearExpenseClick = { viewModel.clearExpenseFields() },
-            onAddExpenseClick = { viewModel.submitPlannedExpense() })
+            onAddExpenseClick = { viewModel.submitPlannedExpense(ctx) })
         Spacer(modifier = Modifier.height(30.dp))
         InputCostAndDescription(
             costValue = uiState.value.value,
