@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FinanceManager</string>
+    <string name="app_name">MWallet</string>
     <string name="homeTitle">Home</string>
     <string name="createTitle">Create</string>
     <string name="settingsTitle">Settings</string>
