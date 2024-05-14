@@ -53,7 +53,7 @@ val ArrayOfExpenses = listOf(
     CategoryModel(
         title = R.string.house,
         icon = R.drawable.house_expence_icon,
-        containerColor = Color(81, 45, 168, 255)
+        containerColor = Color(255, 167, 109, 191)
     ),
     CategoryModel(
         title = R.string.other,

@@ -85,6 +85,10 @@ dependencies {
     implementation("com.patrykandpatrick.vico:views:2.0.0-alpha.14")
     implementation ("com.github.tehras:charts:0.2.4-alpha")
 
+
+    //splashScreen
+    implementation( "androidx.core:core-splashscreen:1.0.1")
+
     implementation("dev.chrisbanes.haze:haze:0.6.2")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

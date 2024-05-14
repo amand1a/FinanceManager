@@ -55,7 +55,6 @@ import com.github.tehras.charts.piechart.renderer.SimpleSliceDrawer
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-
 @Composable
 fun HomeScreen(
     selectedDate: LocalDateTime,

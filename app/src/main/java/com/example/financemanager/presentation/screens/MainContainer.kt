@@ -1,5 +1,7 @@
 package com.example.financemanager.presentation.screens
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -23,7 +25,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -70,24 +74,29 @@ fun MainContainer(viewModel: MainContainerViewModel = hiltViewModel()) {
             )
         }
     ) { contentPadding ->
-        NavHost(
-            navController = navController,
-            startDestination = stringResource(MainNavigation.Add.title),
-            modifier = Modifier
-                .fillMaxSize()
-                .haze(hazeState)
-        ) {
-            composable(context.getString(MainNavigation.Home.title)) {
-                HomeScreen(
-                    selectedDate = uiState.value.selectedMonth,
-                    contentPadding = contentPadding
-                )
-            }
-            composable(context.getString(MainNavigation.Add.title)) {
-                AddExpensesScreen(contentPadding = contentPadding)
-            }
-            composable(context.getString(MainNavigation.Details.title)) {
-                DetailScreen(contentPadding = contentPadding)
+        Box(modifier = Modifier.fillMaxSize()) {
+            Image(painter = painterResource(id = R.drawable.background), contentDescription = null,
+                contentScale = ContentScale.FillBounds,
+                modifier = Modifier.matchParentSize())
+            NavHost(
+                navController = navController,
+                startDestination = stringResource(MainNavigation.Add.title),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .haze(hazeState)
+            ) {
+                composable(context.getString(MainNavigation.Home.title)) {
+                    HomeScreen(
+                        selectedDate = uiState.value.selectedMonth,
+                        contentPadding = contentPadding
+                    )
+                }
+                composable(context.getString(MainNavigation.Add.title)) {
+                    AddExpensesScreen(contentPadding = contentPadding)
+                }
+                composable(context.getString(MainNavigation.Details.title)) {
+                    DetailScreen(contentPadding = contentPadding)
+                }
             }
         }
     }
