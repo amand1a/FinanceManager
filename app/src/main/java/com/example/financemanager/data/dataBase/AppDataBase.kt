@@ -8,11 +8,13 @@ import androidx.room.TypeConverters
 import com.example.financemanager.data.dataBase.converter.CategoryConverter
 import com.example.financemanager.data.dataBase.converter.LocalDateTimeConverter
 import com.example.financemanager.data.dataBase.dao.ExpensesDao
+import com.example.financemanager.data.dataBase.dao.PlannedExpenseDao
 import com.example.financemanager.data.dataBase.entity.ExpensesEntity
+import com.example.financemanager.data.dataBase.entity.PlannedExpenseEntity
 
 @Database(
-    entities = [ExpensesEntity::class],
-    version = (1),
+    entities = [ExpensesEntity::class, PlannedExpenseEntity::class],
+    version = (2),
     exportSchema = false
 )
 @TypeConverters(
@@ -21,6 +23,7 @@ import com.example.financemanager.data.dataBase.entity.ExpensesEntity
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun expensesDao(): ExpensesDao
+    abstract fun plannedExpenseDao(): PlannedExpenseDao
 
     companion object {
         private const val DB_NAME = "app.db"

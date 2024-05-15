@@ -20,10 +20,16 @@
             android:theme="@style/Theme.FinanceManager">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <receiver
+            android:name=".data.receivers.NotificationReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="notification_accepted" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

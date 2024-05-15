@@ -41,7 +41,10 @@ class AddPlanedExpenseViewModel @Inject constructor(
                 description = state.value.description,
                 value = state.value.value.toNormalDouble()
             )
-            plannedExpenseRepository.plannedExpense(expense,context.getString(state.value.category.title))
+            plannedExpenseRepository.plannedExpense(
+                expense,
+                context.getString(state.value.category.title)
+            )
         }
         _addExpensesState.value = AddPlanedExpensesState(
             ArrayOfExpenses[0], LocalDateTime.now(), "", ""
@@ -78,7 +81,7 @@ class AddPlanedExpenseViewModel @Inject constructor(
         }
     }
 
-    fun changeTime(hour: Int, minute: Int){
+    fun changeTime(hour: Int, minute: Int) {
         _addExpensesState.update {
             it.copy(
                 date = it.date.withHour(hour).withMinute(minute).withSecond(0)

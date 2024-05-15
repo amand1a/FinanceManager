@@ -1,8 +1,6 @@
 package com.example.financemanager.domain.model
 
-import java.io.Serializable
 import java.time.LocalDateTime
-
 
 data class ExpenseDto(
     val id: Long = 0,

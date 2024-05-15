@@ -1,8 +1,10 @@
 package com.example.financemanager.di.modules
 
 import com.example.financemanager.data.dataBase.entity.ExpensesEntity
+import com.example.financemanager.data.dataBase.entity.PlannedExpenseEntity
 import com.example.financemanager.data.mapper.CategoryDtoMapper
 import com.example.financemanager.data.mapper.ExpenseDtoMapper
+import com.example.financemanager.data.mapper.PlannedExpenseDtoMapper
 import com.example.financemanager.data.model.CategoryDataModel
 import com.example.financemanager.domain.mapper.CategoryDtoToCategoryModelMapper
 import com.example.financemanager.domain.mapper.ExpenseDtoToExpenseModelMapper
@@ -51,6 +53,13 @@ class MapperModule {
     fun getCategoryHomeModelList(
         impl: ExpensesListToCategoryExpensesHomeModelList
     ): ModelMapper<List<ExpensesModel>, List<CategoryExpensesHomeModel>> {
+        return impl
+    }
+
+    @Provides
+    fun getExpenseDtoFromPlannedExpense(
+        impl: PlannedExpenseDtoMapper
+    ): ModelMapper<PlannedExpenseEntity, ExpenseDto> {
         return impl
     }
 }
