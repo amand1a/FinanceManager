@@ -1,6 +1,5 @@
 package com.example.financemanager.data.mapper
 
-import androidx.room.Insert
 import com.example.financemanager.data.dataBase.entity.PlannedExpenseEntity
 import com.example.financemanager.data.model.CategoryDataModel
 import com.example.financemanager.domain.mapper.ModelMapper
