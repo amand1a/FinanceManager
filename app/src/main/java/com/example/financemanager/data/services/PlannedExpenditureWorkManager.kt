@@ -12,6 +12,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.financemanager.R
 import com.example.financemanager.data.receivers.NotificationReceiver
+import com.example.financemanager.data.repository.PlannedExpenseRepositoryImpl
 
 class PlannedExpenditureWorkManager(
     private val ctx: Context,
@@ -19,22 +20,27 @@ class PlannedExpenditureWorkManager(
 ) :
     CoroutineWorker(ctx, params) {
     override suspend fun doWork(): Result {
-        val category = inputData.getString("title") ?: ""
-        val description = inputData.getString("description") ?: ""
-        val cost = inputData.getString("cost") ?: ""
-        val bodyString = "$category : $cost\n$description"
-        val id = inputData.getLong("id", 0)
-        notifyPlannedExpenditure(ctx, bodyString, id)
+        with(inputData) {
+            val category = getString(PlannedExpenseRepositoryImpl.TITLE_KEY) ?: ""
+            val description = getString(PlannedExpenseRepositoryImpl.DESCRIPTION_KEY) ?: ""
+            val cost = getString(PlannedExpenseRepositoryImpl.COST_KEY) ?: ""
+            val bodyString = "$category : $cost\n$description"
+            val id = getLong(PlannedExpenseRepositoryImpl.KEY_ID, 0)
+            notifyPlannedExpenditure(ctx, bodyString, id)
+        }
+
         return Result.success()
     }
 
     companion object {
         const val Planned_Expenditure_Notification = "planned expenditure"
-
+        const val NOTIFICATION_ACCEPTED = "notification_accepted"
+        private const val ACCEPT = "accept"
+        private const val NOTIFY_TITLE = "Planned Expenditure"
         fun notifyPlannedExpenditure(context: Context, message: String, id: Long) {
             val acceptIntent = Intent(context, NotificationReceiver::class.java)
-            acceptIntent.action = "notification_accepted"
-            acceptIntent.putExtra("id", id)
+            acceptIntent.action = NOTIFICATION_ACCEPTED
+            acceptIntent.putExtra(PlannedExpenseRepositoryImpl.KEY_ID, id)
             val acceptPendingIntent = PendingIntent.getBroadcast(
                 context,
                 0,
@@ -43,11 +49,11 @@ class PlannedExpenditureWorkManager(
             )
             val builder = NotificationCompat.Builder(context, Planned_Expenditure_Notification)
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentTitle("Planned Expenditure")
+                .setContentTitle(NOTIFY_TITLE)
                 .setContentText(message)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setVibrate(LongArray(0))
-                .addAction(R.drawable.baseline_done_24, "Accept", acceptPendingIntent)
+                .addAction(R.drawable.baseline_done_24, ACCEPT, acceptPendingIntent)
             if (ActivityCompat.checkSelfPermission(
                     context,
                     Manifest.permission.POST_NOTIFICATIONS

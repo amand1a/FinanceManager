@@ -65,7 +65,7 @@ dependencies {
     implementation("com.google.android.gms:play-services-wallet:19.3.0")
 
     // WorkManager dependency
-    implementation("androidx.work:work-runtime-ktx:2.9.0")
+    implementation ("androidx.work:work-runtime-ktx:2.9.0")
 
     val nav_version = "2.7.7"
 

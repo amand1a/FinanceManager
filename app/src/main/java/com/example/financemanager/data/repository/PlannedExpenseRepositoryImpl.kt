@@ -69,7 +69,6 @@ class PlannedExpenseRepositoryImpl @Inject constructor(
         )
     }
 
-
     private suspend fun getAndDeletePlannedExpense(id: Long): PlannedExpenseEntity? {
         val exp = plannedExpenseDao.get(id)
         return if (exp != null) {
@@ -78,5 +77,12 @@ class PlannedExpenseRepositoryImpl @Inject constructor(
         } else {
             null
         }
+    }
+
+    companion object{
+        const val KEY_ID = "id"
+        const val TITLE_KEY = "title"
+        const val DESCRIPTION_KEY = "description"
+        const val COST_KEY = "cost"
     }
 }
