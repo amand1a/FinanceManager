@@ -26,7 +26,7 @@ fun DetailScreen(viewModel: DetailViewModel = hiltViewModel(), contentPadding: P
         OutlinedTextField(
             value = uiState.value.currencyName,
             onValueChange = { viewModel.setCurrencyName(it) },
-            label = {Text(stringResource(R.string.currency_name))},
+            label = { Text(stringResource(R.string.currency_name)) },
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Done
             ),

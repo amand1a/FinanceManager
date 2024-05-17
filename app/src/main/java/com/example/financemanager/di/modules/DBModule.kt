@@ -18,4 +18,7 @@ class DBModule {
 
     @Provides
     fun getExpensesDao(dataBase: AppDatabase) = dataBase.expensesDao()
+
+    @Provides
+    fun getPlannedExpense(dataBase: AppDatabase) = dataBase.plannedExpenseDao()
 }

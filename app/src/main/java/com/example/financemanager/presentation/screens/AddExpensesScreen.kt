@@ -175,10 +175,11 @@ fun AddPlannedExpense(
     focus: FocusManager,
     viewModel: AddPlanedExpenseViewModel = hiltViewModel()
 ) {
+    val ctx = LocalContext.current
     val uiState = viewModel.state.collectAsState()
     Column(modifier = Modifier.fillMaxSize()) {
         SaveAndClearButtons(onClearExpenseClick = { viewModel.clearExpenseFields() },
-            onAddExpenseClick = { viewModel.submitPlannedExpense() })
+            onAddExpenseClick = { viewModel.submitPlannedExpense(ctx) })
         Spacer(modifier = Modifier.height(30.dp))
         InputCostAndDescription(
             costValue = uiState.value.value,
@@ -220,13 +221,18 @@ fun InputTime(
             value = time.hour.toString() + ":" + time.minute.toString(),
             onValueChange = {},
             label = { Text(text = stringResource(R.string.time)) },
-            modifier = Modifier.weight(0.6f).height(IntrinsicSize.Min).padding(start = 4.dp),
+            modifier = Modifier
+                .weight(0.6f)
+                .height(IntrinsicSize.Min)
+                .padding(start = 4.dp),
             textStyle = TextStyle(
                 fontSize = 24.sp
-            ))
+            )
+        )
         Button(modifier = Modifier
-                .padding(start = 4.dp, end = 4.dp).height(IntrinsicSize.Min),
-        shape = RoundedCornerShape(4.dp),
+            .padding(start = 4.dp, end = 4.dp)
+            .height(IntrinsicSize.Min),
+            shape = RoundedCornerShape(4.dp),
             onClick = { showTimePicker.value = !showTimePicker.value }) {
             Text(text = stringResource(R.string.change))
         }
@@ -489,7 +495,10 @@ fun InputDate(
             value = "${dateTime.dayOfMonth}/${dateTime.monthValue}/${dateTime.year}",
             onValueChange = {},
             label = { Text(text = stringResource(R.string.date)) },
-            modifier = Modifier.weight(0.6f).height(IntrinsicSize.Min).padding(start = 4.dp),
+            modifier = Modifier
+                .weight(0.6f)
+                .height(IntrinsicSize.Min)
+                .padding(start = 4.dp),
             textStyle = TextStyle(
                 fontSize = 24.sp
             )
@@ -499,7 +508,8 @@ fun InputDate(
                 showDatePicker = true
             },
             modifier = Modifier
-                .padding(start = 4.dp, end = 4.dp).height(IntrinsicSize.Min),
+                .padding(start = 4.dp, end = 4.dp)
+                .height(IntrinsicSize.Min),
             shape = RoundedCornerShape(4.dp)
         ) {
             Text(text = stringResource(R.string.change))

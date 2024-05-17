@@ -64,6 +64,9 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     implementation("com.google.android.gms:play-services-wallet:19.3.0")
 
+    // WorkManager dependency
+    implementation ("androidx.work:work-runtime-ktx:2.9.0")
+
     val nav_version = "2.7.7"
 
     implementation("androidx.navigation:navigation-compose:$nav_version")
